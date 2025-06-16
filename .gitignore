@@ -1,0 +1,10 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+*.ipynb_checkpoints/
+
+.env
+.index_ipynb
+archive/911_recordings
+archive/tinyllm
