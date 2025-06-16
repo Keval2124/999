@@ -8,3 +8,5 @@ __pycache__/
 index_ipynb
 archive/911_recordings
 archive/tinyllm
+archive/tinyllm-lora
+archive/clean_audio

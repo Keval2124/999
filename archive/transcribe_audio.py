@@ -19,7 +19,7 @@ DEFAULT_INPUT_DIR = "./911_recordings"
 DEFAULT_OUTPUT_DIR = "./output"
 DEFAULT_CLEAN_DIR = "./clean_audio"
 DEFAULT_DIALOGUE_PATH = "./calls_dialogue.json"
-DEFAULT_MAX_FILES = 20
+DEFAULT_MAX_FILES = 2
 
 # Load the model and utilities
 model, utils = torch.hub.load('snakers4/silero-vad', 'silero_vad')
