@@ -5,6 +5,6 @@ __pycache__/
 *.ipynb_checkpoints/
 
 .env
-.index_ipynb
+index_ipynb
 archive/911_recordings
 archive/tinyllm
