@@ -11,7 +11,7 @@ from tokenizers.trainers import BpeTrainer
 from tokenizers.pre_tokenizers import Whitespace
 
 # Config 
-data_dir = 'output'
+data_dir = '/home/keval/Music/999/archive/output'
 tokenizer_path = 'bpe_tokenizer_v2.json'
 vocab_size = 5000
 end_of_text_token = "<|endoftext|>"
