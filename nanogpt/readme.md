@@ -1,0 +1,10 @@
+── nanogpt
+    ├── bench.py
+    ├── chat.py
+    ├── config
+    ├── configurator.py
+    ├── data
+    ├── model.py
+    ├── output
+    ├── prepare_transcripts.py
+    └── train.py
