@@ -36,19 +36,19 @@
 
 ---
 
-##  Overview
+## Overview
 
 <code>❯ REPLACE-ME</code>
 
 ---
 
-##  Features
+## Features
 
 <code>❯ REPLACE-ME</code>
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```sh
 └── 999/
