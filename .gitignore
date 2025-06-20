@@ -1,4 +1,3 @@
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
@@ -15,5 +14,3 @@ calls/generated_audio
 calls/wav_output
 calls/convert.py
 calls/try.py
-
-index.py
