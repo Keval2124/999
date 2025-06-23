@@ -14,3 +14,6 @@ calls/generated_audio
 calls/wav_output
 calls/convert.py
 calls/try.py
+
+try.py
+wav_folder/
