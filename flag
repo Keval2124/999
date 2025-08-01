@@ -1,0 +1,33 @@
+89
++-------------------+
+| SLURM Script      |
+| (Launch Job)      |
++-------------------+
+          |
+          v
++-------------------+
+| Orchestrator.py   |
+| (Loop until done) |
++-------------------+
+          |
+          +-----------------+
+          |                 |
+          v                 v
++-------------------+  +-------------------+
+| Transcation.py    |  | Finetune_bert.py  |
+| (Batch Transcribe)|  | (Train on All Data)|
+| - Load Models     |  | - Load/Augment Data|
+| - Process Audio   |  | - Tokenize/Train  |
+| - Save .txt       |  | - Evaluate/Log    |
+| (Parallel Workers)|  | - Save Model      |
++-------------------+  | (Distributed CPU) |
+          |            +-------------------+
+          |                       |
+          +-----------------------+
+          |
+          v
++-------------------+
+| All Files Done?   |
+| Yes: End          |
+| No: Next Batch    |
++-------------------+

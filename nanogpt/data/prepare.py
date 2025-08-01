@@ -4,11 +4,15 @@ import pickle
 import numpy as np
 import tiktoken
 import time
+import json  # Added for JSON handling
 
 def prepare(config):
-    # Ensure dataset attribute exists
+    # Ensure required attributes exist
     if not hasattr(config, 'dataset'):
         raise ValueError("Config file must define 'dataset' attribute")
+    if not hasattr(config, 'TEXT_DIR'):
+        raise ValueError("Config file must define 'TEXT_DIR' attribute")
+    # JSON_FILE is optional; we'll use it if needed
 
     # Use parent directory of script to resolve data directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,10 +26,48 @@ def prepare(config):
     print(f"Data directory: {data_dir}")
     print(f"Input file path: {input_file}")
 
-    # Check if input file exists
-    if not os.path.exists(input_file):
-        raise FileNotFoundError(f"Input file not found at: {input_file}")
+    # Create data_dir if it doesn't exist
+    os.makedirs(data_dir, exist_ok=True)
 
+    # Generate input.txt if it doesn't exist
+    if not os.path.exists(input_file):
+        print(f"Input file not found. Generating from config sources...")
+        
+        data = ""
+        
+        # Option 1: Concatenate all .txt files from TEXT_DIR (assumed primary source)
+        if os.path.exists(config.TEXT_DIR):
+            print(f"Concatenating text files from {config.TEXT_DIR}")
+            for filename in sorted(os.listdir(config.TEXT_DIR)):  # Sorted for reproducibility
+                if filename.endswith('.txt'):
+                    file_path = os.path.join(config.TEXT_DIR, filename)
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data += f.read() + "\n\n"  # Add separators between files
+        else:
+            print(f"Warning: TEXT_DIR {config.TEXT_DIR} does not exist.")
+        
+        # Option 2: If JSON_FILE exists and no data from TEXT_DIR, extract text from it
+        # Assuming JSONL format with {"text": "..."} per line; adjust if your format differs
+        if not data and hasattr(config, 'JSON_FILE') and os.path.exists(config.JSON_FILE):
+            print(f"Extracting text from {config.JSON_FILE}")
+            with open(config.JSON_FILE, 'r', encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        entry = json.loads(line)
+                        if 'text' in entry:
+                            data += entry['text'] + "\n\n"
+                    except json.JSONDecodeError:
+                        print(f"Warning: Invalid JSON line in {config.JSON_FILE}")
+        
+        if not data:
+            raise ValueError("No data found in TEXT_DIR or JSON_FILE to generate input.txt")
+        
+        # Write the generated data to input.txt
+        with open(input_file, 'w', encoding='utf-8') as f:
+            f.write(data)
+        print(f"Generated input.txt with {len(data):,} characters")
+
+    # Proceed with original logic
     # Initialize BPE tokenizer
     tokenizer = tiktoken.get_encoding("gpt2")
     
@@ -51,7 +93,6 @@ def prepare(config):
     val_data = encoded_data[int(n * 0.9):]
 
     # Save tokenized data and metadata
-    os.makedirs(data_dir, exist_ok=True)
     with open(os.path.join(data_dir, 'train.bin'), 'wb') as f:
         np.array(train_data, dtype=np.uint16).tofile(f)
     with open(os.path.join(data_dir, 'val.bin'), 'wb') as f:

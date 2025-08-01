@@ -8,15 +8,19 @@ log_interval = 10
 always_save_checkpoint = True
 wandb_log = False
 
-dataset = 'calls'  # must match your `data/calls` folder
+dataset = 'calls'
+TEXT_DIR = "/mnt/scratch/users/sgkshah/999/output"
+JSON_FILE = "/mnt/scratch/users/sgkshah/999/sample.json"
+
 gradient_accumulation_steps = 1
-batch_size = 4
+batch_size = 8
 block_size = 128  # you can try 256 or 512 later
 
-n_layer = 4
-n_head = 4
-n_embd = 256
-dropout = 0.1
+n_layer  = 48
+n_head   = 25
+n_embd   = 1600
+dropout  = 0.1          # keep a little dropout for 1.6 B model
+bias     = True         # GPT-2 XL uses bias=True
 
 bias = False  # use bias in linear layers
 learning_rate = 1e-3
