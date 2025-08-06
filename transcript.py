@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Full transcription pipeline with automatic post-finetuning
 every 50 new transcripts.
@@ -8,6 +7,8 @@ import torch
 import torch.multiprocessing as mp
 import os
 import whisper
+from whisper.audio import load_audio  # Added for audio slicing
+import difflib  # Added for similarity check
 from pyannote.audio import Pipeline
 from datetime import timedelta
 import json
@@ -22,6 +23,7 @@ import psutil
 import time
 import sys
 import subprocess          # <--- NEW (only for post-finetune trigger)
+from whisper.audio import SAMPLE_RATE  # Add this (for consistent 16kHz sampling)
 
 # ------------------------------------------------------------------
 # NLTK bootstrap (unchanged)
@@ -47,14 +49,20 @@ class Config:
     BERT_LABEL_MAP = {0: "operator", 1: "caller", 2: "unknown"}
 
 # ------------------------------------------------------------------
-# CUDA failsafe helpers (unchanged)
+# CUDA failsafe helpers (updated for whisper)
 # ------------------------------------------------------------------
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def safe_load_whisper_model(model_name):
-    model = whisper.load_model(model_name, device="cpu")
-    return model, torch.device("cpu")
+    device = get_device()
+    try:
+        model = whisper.load_model(model_name, device=device.type)
+        return model, device
+    except Exception as e:
+        print(f"[!] Error loading Whisper on {device}, falling back to CPU: {e}")
+        model = whisper.load_model(model_name, device="cpu")
+        return model, torch.device("cpu")
 
 def safe_load_pyannote_pipeline(token):
     device = get_device()
@@ -103,8 +111,29 @@ def safe_load_hf_pipeline():
             device=-1
         ), -1
 
+def safe_load_audio_emo_pipeline():
+    device = 0 if torch.cuda.is_available() else -1
+    torch_dtype = torch.float16 if device >= 0 else torch.float32
+    try:
+        return hf_pipeline(
+            "audio-classification",
+            model="ehcalabres/wav2vec2-lg-xlsr-en-speech-emotion-recognition",
+            top_k=1,
+            device=device,
+            torch_dtype=torch_dtype
+        ), device
+    except Exception as e:
+        print(f"[!] Error loading audio emotion pipeline: {e}, falling back to CPU with float32")
+        return hf_pipeline(
+            "audio-classification",
+            model="ehcalabres/wav2vec2-lg-xlsr-en-speech-emotion-recognition",
+            top_k=1,
+            device=-1,
+            torch_dtype=torch.float32
+        ), -1
+
 # ------------------------------------------------------------------
-# Helper functions (unchanged)
+# Helper functions (unchanged, added get_content_block)
 # ------------------------------------------------------------------
 def classify_utterance_bert(text, tokenizer, model, device):
     try:
@@ -119,16 +148,34 @@ def classify_utterance_bert(text, tokenizer, model, device):
         print(f"[!] Error in BERT classification: {e}")
         return None
 
-def segment_emotion(text, emo_pipe):
+def segment_text_emotion(text, emo_pipe):
     try:
         result = emo_pipe(text)
         if isinstance(result, list) and len(result) > 0 and isinstance(result[0], dict) and "label" in result[0]:
             return result[0]["label"].lower()
         else:
-            print(f"[!] Unexpected result from emotion pipeline for text '{text}': {result}")
+            print(f"[!] Unexpected result from text emotion pipeline for text '{text}': {result}")
             return "neutral"
     except Exception as e:
-        print(f"[!] Error in emotion detection for text '{text}': {e}")
+        print(f"[!] Error in text emotion detection for text '{text}': {e}")
+        return "neutral"
+
+def segment_audio_emotion(audio_file, start, end, audio_emo_pipe):
+    try:
+        audio = load_audio(audio_file)
+        start_idx = int(start * SAMPLE_RATE)
+        end_idx = int(end * SAMPLE_RATE)
+        slice_audio = audio[start_idx:end_idx]
+        if len(slice_audio) == 0:
+            return "neutral"
+        result = audio_emo_pipe(slice_audio)
+        if isinstance(result, list) and len(result) > 0 and isinstance(result[0], dict) and "label" in result[0]:
+            return result[0]["label"].lower()
+        else:
+            print(f"[!] Unexpected result from audio emotion pipeline: {result}")
+            return "neutral"
+    except Exception as e:
+        print(f"[!] Error in audio emotion detection for segment [{start}-{end}]: {e}")
         return "neutral"
 
 def find_best_matching_speaker(start, end, diarization_result):
@@ -142,8 +189,29 @@ def find_best_matching_speaker(start, end, diarization_result):
 def sentence_split(text):
     return re.split(r'(?<=[.?!])\s+', text.strip())
 
+def clean_message(text):
+    if not isinstance(text, str):
+        text = str(text)
+    # Remove extra whitespace
+    text = re.sub(r'\s+', ' ', text).strip()
+    # Simple de-duplication of consecutive words
+    words = text.split()
+    deduped = []
+    for word in words:
+        if not deduped or word.lower() != deduped[-1].lower():
+            deduped.append(word)
+    return ' '.join(deduped)
+
+def get_content_block(dialog_lines):
+    contents = []
+    for line in dialog_lines:
+        if ':' in line:
+            content = line.split(':', 1)[1].strip()
+            contents.append(clean_message(content))
+    return '\n'.join(contents)
+
 # ------------------------------------------------------------------
-# Worker function (unchanged)
+# Worker function (updated with pre-check)
 # ------------------------------------------------------------------
 def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None):
     """
@@ -183,7 +251,7 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
         _set_seed()
         print("[+] Worker running on CPU")
 
-    # ---------- Worker body (unchanged) ----------
+    # ---------- Worker body (updated) ----------
     process = psutil.Process()
     torch.set_num_threads(mp.cpu_count())
     print(f"[+] Set torch threads to {mp.cpu_count()} for worker {mp.current_process().name}")
@@ -195,7 +263,8 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
     try:
         whisper_model, _ = safe_load_whisper_model(Config.WHISPER_MODEL)
         pipeline, _ = safe_load_pyannote_pipeline(Config.HF_TOKEN)
-        emo_pipe, _ = safe_load_hf_pipeline()
+        emo_pipe, _ = safe_load_hf_pipeline()  # Text-based
+        audio_emo_pipe, _ = safe_load_audio_emo_pipeline()  # Speech-based
         bert_tokenizer, bert_model, bert_device = safe_load_bert_model(Config.FINETUNED_BERT_MODEL_PATH)
     except Exception as e:
         print(f"[!] Error initializing models for worker {mp.current_process().name}: {e}")
@@ -205,9 +274,16 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
     CALLER_CUES = shared_data["CALLER_CUES"]
     OPERATOR_CUES = shared_data["OPERATOR_CUES"]
 
-    # Emotion → role rules
-    CALLER_EMOS = {"fear", "anger", "sadness", "surprise"}
-    OPERATOR_EMOS = {"neutral", "calm"}
+    # Emotion → role rules (separate for text and speech models)
+    TEXT_CALLER_EMOS = {"anger", "disgust", "fear", "sadness", "surprise"}
+    TEXT_OPERATOR_EMOS = {"neutral"}
+    SPEECH_CALLER_EMOS = {"angry", "disgusted", "fearful", "sad", "surprised"}
+    SPEECH_OPERATOR_EMOS = {"neutral", "calm"}
+
+    # Precompute HF content blocks (from shared, but since list, access)
+    hf_content_blocks = list(shared_data["hf_content_blocks"])
+    if not hf_content_blocks:
+        print("[!] No HF content blocks loaded, proceeding without duplicate check.")
 
     for audio_index in audio_indices:
         out_path = os.path.join(Config.OUTPUT_FOLDER, f"{audio_index}.txt")
@@ -220,7 +296,35 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
             print(f"[!] Audio file missing, skipping: {audio_file} (rank {mp.current_process().name})")
             continue
 
-        print(f"[=>> Processing: {audio_file} (rank {mp.current_process().name}) ]")
+        print(f"[=>> Pre-checking: {audio_file} (rank {mp.current_process().name}) ]")
+
+        # Pre-check: Transcribe first 60s and check similarity
+        try:
+            full_audio = load_audio(audio_file)
+            slice_audio = full_audio[:180 * 16000]  # First 180 seconds at 16kHz sample rate
+            temp_trans = whisper_model.transcribe(slice_audio, language="en", verbose=False)
+            temp_content = clean_message(temp_trans["text"].strip())
+
+            max_sim = 0.0
+            for hf_block in hf_content_blocks:
+                sim = difflib.SequenceMatcher(None, temp_content, hf_block).ratio()
+                if sim > max_sim:
+                    max_sim = sim
+
+            print(f"[DEBUG] Max similarity for {audio_file}: {max_sim}")
+
+            is_duplicate = False
+            if max_sim > 0.75:
+                is_duplicate = True
+
+            if is_duplicate:
+                print(f"[!] Skipping {audio_file} due to high similarity with HF data (rank {mp.current_process().name})")
+                shared_data["skipped"].append(audio_index)
+                continue
+        except Exception as e:
+            print(f"[!] Error in pre-check for {audio_file}: {e} (proceeding anyway) (rank {mp.current_process().name})")
+
+        print(f"[=>> Processing full: {audio_file} (rank {mp.current_process().name}) ]")
         file_start_time = time.time()
 
         try:
@@ -261,7 +365,8 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
             s, e, txt = seg["start"], seg["end"], seg["text"].strip()
             spk = find_best_matching_speaker(s, e, diarization)
             bert_role = classify_utterance_bert(txt, bert_tokenizer, bert_model, bert_device)
-            emotion = segment_emotion(txt, emo_pipe)
+            text_emotion = segment_text_emotion(txt, emo_pipe)
+            speech_emotion = segment_audio_emotion(audio_file, s, e, audio_emo_pipe)
             txt_lower = txt.lower()
 
             if bert_role in ["operator", "caller"]:
@@ -270,9 +375,9 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
                 role = "caller"
             elif any(cue in txt_lower for cue in OPERATOR_CUES):
                 role = "operator"
-            elif emotion in CALLER_EMOS and any(p in txt_lower for p in {"i", "my", "he", "she"}):
+            elif (text_emotion in TEXT_CALLER_EMOS or speech_emotion in SPEECH_CALLER_EMOS) and any(p in txt_lower for p in {"i", "my", "he", "she"}):
                 role = "caller"
-            elif emotion in OPERATOR_EMOS:
+            elif (text_emotion in TEXT_OPERATOR_EMOS and speech_emotion in SPEECH_OPERATOR_EMOS):
                 role = "operator"
             else:
                 role = role_map.get(spk, "unknown")
@@ -320,7 +425,7 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
         print(f"[+] Partial memory cleared after {audio_file}: {process.memory_info().rss / 1024**3:.2f} GB (rank {mp.current_process().name})")
 
     # Final cleanup
-    del whisper_model, pipeline, emo_pipe, bert_tokenizer, bert_model
+    del whisper_model, pipeline, emo_pipe, audio_emo_pipe, bert_tokenizer, bert_model
     gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
@@ -370,7 +475,7 @@ def _run_post_finetune(new_indices):
         unseen = unseen[_FINETUNE_CHUNK:]
 
 # ------------------------------------------------------------------
-# transcribe_batch (unchanged except final two lines)
+# transcribe_batch (unchanged except final two lines + HF loading + skipped write)
 # ------------------------------------------------------------------
 def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     mp.set_start_method('spawn', force=True)
@@ -427,6 +532,20 @@ def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     print(f"[+] CALLER_CUES count: {len(shared_data['CALLER_CUES'])}")
     print(f"[+] OPERATOR_CUES count: {len(shared_data['OPERATOR_CUES'])}")
 
+    # Load HF dialogs for duplicate check
+    hf_file = "additional_911_dialogs.txt"
+    if os.path.exists(hf_file):
+        with open(hf_file, "r", encoding="utf-8") as f:
+            hf_raw = f.read().strip().split("\n\n")
+        hf_content_blocks = [get_content_block(dialog.splitlines()) for dialog in hf_raw if dialog.strip()]
+        print(f"[+] Loaded {len(hf_content_blocks)} HF content blocks for duplicate check.")
+    else:
+        hf_content_blocks = []
+        print(f"[!] HF file {hf_file} not found, skipping duplicate check.")
+
+    shared_data["hf_content_blocks"] = manager.list(hf_content_blocks)
+    shared_data["skipped"] = manager.list()
+
     if not audio_indices:
         print("[!] No audio files to process in this batch. Exiting.")
         return []
@@ -456,6 +575,14 @@ def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     else:
         print("[✓] All transcripts in batch are present.")
 
+    # Write skipped
+    skipped_list = list(shared_data["skipped"])
+    if skipped_list:
+        with open("skipped.txt", "w", encoding="utf-8") as f:
+            for idx in skipped_list:
+                f.write(f"skipped {idx} due to duplicate with HF\n")
+        print(f"[+] Wrote {len(skipped_list)} skipped entries to skipped.txt")
+
     del shared_data, manager, cue_data
     gc.collect()
     if torch.cuda.is_available():
@@ -480,4 +607,5 @@ if __name__ == "__main__":
         audio_files = [f for f in os.listdir(Config.AUDIO_FOLDER) if f.endswith('.wav')]
         audio_indices = [int(f.split('.')[0]) for f in audio_files if f.split('.')[0].isdigit()]
         audio_indices.sort()
+        gc.collect()  # Clean up before starting
     transcribe_batch(audio_indices)

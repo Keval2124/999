@@ -41,3 +41,9 @@ calls/gpt_model_checkpoint.pth
 calls/input.txt
 
 last_finetune.json
+flag.txt
+local_emotion_model
+calls/dia
+calls/gpt
+calls/main
+calls/clean_input.txt

@@ -3,10 +3,10 @@
 #SBATCH --job-name=nanogpt_gpu_single
 #SBATCH --output=nanogpt_gpu_output_%j.log
 #SBATCH --error=nanogpt_gpu_error_%j.log
-#SBATCH --partition=gpu-a100-lowbig        # Target L40S GPU partition (ensure this exists on your cluster)
-#SBATCH --nodes=2                   # Request 2 nodes
-#SBATCH --ntasks=2                  # Request 1 task (single process)
-#SBATCH --cpus-per-task=48           # Request 4 CPUs for the task (adjust as needed)
+#SBATCH --partition=gpu-l40s-low     # Target L40S GPU partition (ensure this exists on your cluster)
+#SBATCH --nodes=1                   # Request 2 nodes
+#SBATCH --ntasks=1                  # Request 1 task (single process)
+#SBATCH --cpus-per-task=48          # Request 168 CPUs for the task (adjust as needed)
 #SBATCH --gres=gpu:1                # Request 1 GPU
 #SBATCH --mem=150G                  # Request 150 GB RAM
 #SBATCH --time=1-00:00:00           # 3-day time limit
@@ -36,11 +36,14 @@ echo "SLURM_ARRAY_TASK_ID: $SLURM_ARRAY_TASK_ID" # Will be empty/not set
 echo "SLURM_JOB_GPUS: $SLURM_JOB_GPUS"
 echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
 echo "SLURM_JOB_NODELIST: $SLURM_JOB_NODELIST"
+echo "Number of Nodes: $SLURM_JOB_NUM_NODES"
+echo "Number of Tasks: $SLURM_NTASKS"
+echo "CPUs per Task: $SLURM_CPUS_PER_TASK"
 echo "========================"
 
 du -sh ~/.cache
 #python finetune_bert.py '[1, 2, 3]'
 # torchrun --nproc_per_node=40 control.py 
-python transcribe_distributed.py 
+python finetune_emotion.py 
 # Check cache size
 du -sh ~/.cache
