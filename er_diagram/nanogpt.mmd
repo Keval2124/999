@@ -1,0 +1,17 @@
+graph TD
+    A[train.py] -->|imports GPTConfig, GPT| B[model.py]
+    B -->|defines GPT class with init_from_config| C[GPT Model Initialization]
+    A -->|creates GPTConfig instance| D[Config Setup]
+    D -->|passes config to GPT.init_from_config| C
+    C -->|creates model instance| E[GPT Model]
+    A -->|sets up optimizer AdamW| F[Optimizer Setup]
+    A -->|loads or creates data loaders| G[Data Preparation]
+    G -->|provides batches| H[Training Loop]
+    E -->|forward pass on batch| I[Compute Loss]
+    I -->|"loss.backward()"| J[Backward Pass]
+    J -->|"optimizer.step()"| K[Update Parameters]
+    K -->|repeat for max_iters| H
+    H -->|every save_checkpoint_secs| L[Save Checkpoint]
+    L -->|"torch.save model.state_dict() to out_dir/ckpt.pt"| M[Model Saved]
+    H -->|evaluates on val| N[Evaluation]
+    N -->|logs loss| O[Logging]

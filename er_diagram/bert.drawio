@@ -1,0 +1,70 @@
+<mxfile host="65bd71144e">
+    <diagram id="ER-diagram" name="ER">
+        <mxGraphModel dx="1226" dy="738" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="15" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;rounded=0;endSize=8;startSize=8;entryX=0.829;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.286;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="e4" target="e6">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="520" y="190" as="sourcePoint"/>
+                        <mxPoint x="470" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e1" value="DataSource" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="294" y="200" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="Sample&lt;br&gt;(text, label)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="294" y="100" width="120" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="AugmentedSample" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="105" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="Dataset&lt;br&gt;(train / test split)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="220" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="e5" target="archBox" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" value="WeightedDistilBertForSequenceClassification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="300" width="280" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" style="edgeStyle=none;html=1;" parent="1" source="e6" target="argsBox" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" value="Trainer&lt;br&gt;(TrainingArguments)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="480" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="e7" target="5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" value="MLflowRun&lt;br&gt;(metrics / artifacts)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="390" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="archBox" value="&lt;b&gt;Architecture&lt;/b&gt;&lt;br&gt;• DistilBertModel&lt;br&gt;• Linear pre_classifier (768→768)&lt;br&gt;• ReLU activation&lt;br&gt;• Dropout (p=0.2)&lt;br&gt;• Linear classifier (768→3)&lt;br&gt;• CrossEntropyLoss (with class_weights)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffcc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="440" width="320" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="argsBox" value="&lt;b&gt;TrainingArguments&lt;/b&gt;&lt;br&gt;• learning_rate = 2e-5&lt;br&gt;• num_train_epochs = 10&lt;br&gt;• per_device_train_batch_size = 4&lt;br&gt;• per_device_eval_batch_size = 8&lt;br&gt;• weight_decay = 0.01&lt;br&gt;• eval_strategy = epoch&lt;br&gt;• save_strategy = epoch&lt;br&gt;• load_best_model_at_end = True&lt;br&gt;• fp16 = False, use_cpu = True" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f2ff;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="660" width="420" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;" parent="1" source="e1" target="e2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;" parent="1" source="e2" target="e3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;" parent="1" source="e3" target="e4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;" parent="1" source="e5" target="e6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#666666;" parent="1" source="e6" target="e7" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="output_folder" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="280.00000000000006" width="160" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
