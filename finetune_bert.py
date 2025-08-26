@@ -199,7 +199,7 @@ class WeightedDistilBertForSequenceClassification(DistilBertPreTrainedModel):
         # Loss calculation using the buffered weights
         loss = None
         if labels is not None:
-             loss = self.loss_fn(logits, labels)
+            loss = self.loss_fn(logits, labels)
         return {"loss": loss, "logits": logits} if loss is not None else {"logits": logits}
 
 class CustomEarlyStopCallback(TrainerCallback):
@@ -396,41 +396,41 @@ def finetune_main(batch_indices=None):
         except Exception as e: # Catch CUDA OOM or other loading/moving errors
             logger.error(f"Error loading model onto {device} (likely CUDA OOM): {e}")
             if "cuda" in str(e).lower() or "out of memory" in str(e).lower():
-                 logger.warning("Falling back to CPU due to GPU error.")
-                 device = torch.device("cpu")
-                 use_cpu_arg = True
-                 suggested_fp16 = False
-                 torch_dtype_arg = 'auto' # Or torch.float32, 'auto' is safer
-                 logger.info(f"Retrying model load with torch_dtype: {torch_dtype_arg} for CPU.")
-                 try:
-                     # Retry loading for CPU
-                     if os.path.exists(model_path):
-                         config = DistilBertConfig.from_pretrained(model_path, use_auth_token=HF_TOKEN)
-                         model = WeightedDistilBertForSequenceClassification.from_pretrained(
-                             model_path,
-                             class_weights=class_weights_tensor,
-                             use_auth_token=HF_TOKEN,
-                             torch_dtype=torch_dtype_arg, # Use appropriate dtype for CPU
-                         )
-                         # Model should load directly to CPU now
-                         model_loaded = True
-                         logger.info(f"Successfully loaded model from {model_path} onto CPU after fallback.")
-                     else:
-                         # Need to load from pre-trained if path doesn't exist anymore or wasn't used
-                         config = DistilBertConfig.from_pretrained("distilbert-base-uncased", num_labels=3, use_auth_token=HF_TOKEN)
-                         model = WeightedDistilBertForSequenceClassification.from_pretrained(
-                             "distilbert-base-uncased",
-                             config=config,
-                             class_weights=class_weights_tensor,
-                             use_auth_token=HF_TOKEN,
-                             torch_dtype=torch_dtype_arg,
-                         )
-                         model_loaded = True
-                         logger.info("Successfully loaded pre-trained model onto CPU after fallback.")
+                logger.warning("Falling back to CPU due to GPU error.")
+                device = torch.device("cpu")
+                use_cpu_arg = True
+                suggested_fp16 = False
+                torch_dtype_arg = 'auto' # Or torch.float32, 'auto' is safer
+                logger.info(f"Retrying model load with torch_dtype: {torch_dtype_arg} for CPU.")
+                try:
+                    # Retry loading for CPU
+                    if os.path.exists(model_path):
+                        config = DistilBertConfig.from_pretrained(model_path, use_auth_token=HF_TOKEN)
+                        model = WeightedDistilBertForSequenceClassification.from_pretrained(
+                            model_path,
+                            class_weights=class_weights_tensor,
+                            use_auth_token=HF_TOKEN,
+                            torch_dtype=torch_dtype_arg, # Use appropriate dtype for CPU
+                        )
+                        # Model should load directly to CPU now
+                        model_loaded = True
+                        logger.info(f"Successfully loaded model from {model_path} onto CPU after fallback.")
+                    else:
+                        # Need to load from pre-trained if path doesn't exist anymore or wasn't used
+                        config = DistilBertConfig.from_pretrained("distilbert-base-uncased", num_labels=3, use_auth_token=HF_TOKEN)
+                        model = WeightedDistilBertForSequenceClassification.from_pretrained(
+                            "distilbert-base-uncased",
+                            config=config,
+                            class_weights=class_weights_tensor,
+                            use_auth_token=HF_TOKEN,
+                            torch_dtype=torch_dtype_arg,
+                        )
+                        model_loaded = True
+                        logger.info("Successfully loaded pre-trained model onto CPU after fallback.")
 
-                 except Exception as cpu_e:
-                     logger.error(f"Failed to load model onto CPU after fallback: {cpu_e}")
-                     return # Exit if loading fails on CPU too
+                except Exception as cpu_e:
+                    logger.error(f"Failed to load model onto CPU after fallback: {cpu_e}")
+                    return # Exit if loading fails on CPU too
             else:
                 logger.error(f"Non-CUDA error during model loading: {e}")
                 return # Exit if it's a different kind of error
@@ -476,8 +476,8 @@ def finetune_main(batch_indices=None):
                     logger.error(f"Failed to load pre-trained model onto CPU after fallback: {cpu_e}")
                     return # Exit if loading fails on CPU too
             else:
-                 logger.error(f"Non-CUDA error during pre-trained model loading: {e}")
-                 return # Exit if it's a different kind of error
+                logger.error(f"Non-CUDA error during pre-trained model loading: {e}")
+                return # Exit if it's a different kind of error
 
     # --- ADJUST TrainingArguments BASED ON FINAL DEVICE ---
     args = TrainingArguments(

@@ -24,9 +24,10 @@ import time
 import sys
 import subprocess          # <--- NEW (only for post-finetune trigger)
 from whisper.audio import SAMPLE_RATE  # Add this (for consistent 16kHz sampling)
+from typing import List, Dict, Tuple  # Added for type hints
 
 # ------------------------------------------------------------------
-# NLTK bootstrap (unchanged)
+# NLTK bootstrap 
 # ------------------------------------------------------------------
 custom_nltk_dir = os.path.abspath('nltk_data')
 nltk.data.path.append(custom_nltk_dir)
@@ -38,15 +39,17 @@ else:
     print("[+] NLTK tagger found in custom dir, skipping download.")
 
 # ------------------------------------------------------------------
-# Configuration (unchanged)
+# Configuration (updated with new model path)
 # ------------------------------------------------------------------
 class Config:
     HF_TOKEN = ""
     WHISPER_MODEL = "large-v3"
     FINETUNED_BERT_MODEL_PATH = "fine_tuned_bert_role_classifier"
+    FINETUNED_EMOTION_CAUSE_MODEL_PATH = "fine_tuned_emotion_cause_model"  # New: Path to your locally fine-tuned model
     AUDIO_FOLDER = "wav_folder"
     OUTPUT_FOLDER = "output"
     BERT_LABEL_MAP = {0: "operator", 1: "caller", 2: "unknown"}
+    EMOTION_LABEL_MAP = {0: "neutral", 1: "anger", 2: "disgust", 3: "fear", 4: "joy", 5: "sadness", 6: "surprise"}  # Adjust based on your model's labels
 
 # ------------------------------------------------------------------
 # CUDA failsafe helpers (updated for whisper)
@@ -88,6 +91,30 @@ def safe_load_bert_model(path):
         print(f"[!] Error loading BERT model: {e}, falling back to CPU without fp16")
         tokenizer = DistilBertTokenizer.from_pretrained(path)
         model = DistilBertForSequenceClassification.from_pretrained(path, num_labels=3, torch_dtype=torch.float32)
+        model.to(torch.device("cpu"))
+        return tokenizer, model, torch.device("cpu")
+
+# New: Safe loader for the fine-tuned emotion cause model
+def safe_load_emotion_cause_model(path):
+    device = get_device()
+    torch_dtype = torch.float16 if device.type == 'cpu' else 'auto'
+    try:
+        tokenizer = DistilBertTokenizer.from_pretrained(path)
+        model = DistilBertForSequenceClassification.from_pretrained(
+            path, 
+            num_labels=len(Config.EMOTION_LABEL_MAP),  # Adjust num_labels to match your fine-tuned model's emotion classes
+            torch_dtype=torch_dtype
+        )
+        model.to(device)
+        return tokenizer, model, device
+    except Exception as e:
+        print(f"[!] Error loading emotion cause model: {e}, falling back to CPU without fp16")
+        tokenizer = DistilBertTokenizer.from_pretrained(path)
+        model = DistilBertForSequenceClassification.from_pretrained(
+            path, 
+            num_labels=len(Config.EMOTION_LABEL_MAP), 
+            torch_dtype=torch.float32
+        )
         model.to(torch.device("cpu"))
         return tokenizer, model, torch.device("cpu")
 
@@ -133,7 +160,7 @@ def safe_load_audio_emo_pipeline():
         ), -1
 
 # ------------------------------------------------------------------
-# Helper functions (unchanged, added get_content_block)
+# Helper functions (updated for emotion cause)
 # ------------------------------------------------------------------
 def classify_utterance_bert(text, tokenizer, model, device):
     try:
@@ -143,19 +170,24 @@ def classify_utterance_bert(text, tokenizer, model, device):
             outputs = model(**inputs)
         probs = torch.softmax(outputs.logits, dim=1)
         max_prob, pred = torch.max(probs, dim=1)
-        return Config.BERT_LABEL_MAP[pred.item()] if max_prob.item() > 0.7 else None
+        return Config.BERT_LABEL_MAP[pred.item()], max_prob.item()
     except Exception as e:
         print(f"[!] Error in BERT classification: {e}")
-        return None
+        return "unknown", 0.0
 
-def segment_text_emotion(text, emo_pipe):
+# Updated: Use the new model for text emotion (and cause if applicable)
+def segment_text_emotion(text, tokenizer, model, device):
     try:
-        result = emo_pipe(text)
-        if isinstance(result, list) and len(result) > 0 and isinstance(result[0], dict) and "label" in result[0]:
-            return result[0]["label"].lower()
-        else:
-            print(f"[!] Unexpected result from text emotion pipeline for text '{text}': {result}")
-            return "neutral"
+        inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=128)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        with torch.no_grad():
+            outputs = model(**inputs)
+        probs = torch.softmax(outputs.logits, dim=1)
+        max_prob, pred = torch.max(probs, dim=1)
+        emotion = Config.EMOTION_LABEL_MAP[pred.item()]
+        # If model supports cause extraction (e.g., multi-task), parse here
+        # Example: cause = extract_cause_from_outputs(outputs)  # Custom function
+        return emotion  # Return emotion (and cause if needed, e.g., (emotion, cause))
     except Exception as e:
         print(f"[!] Error in text emotion detection for text '{text}': {e}")
         return "neutral"
@@ -211,7 +243,104 @@ def get_content_block(dialog_lines):
     return '\n'.join(contents)
 
 # ------------------------------------------------------------------
-# Worker function (updated with pre-check)
+# Improved speaker labeling 
+# ------------------------------------------------------------------
+def label_speaker(
+        transcript_lines: List[str], 
+        audio_features_list: List[Dict] = None, 
+        role_map: Dict[str, str] = None, 
+        spks: List[str] = None,
+        previous_labels: List[str] = None,
+        bert_tokenizer=None,
+        bert_model=None,
+        bert_device=None,
+        emotion_tokenizer=None,
+        emotion_model=None,
+        emotion_device=None,
+        audio_emo_pipe=None,
+        CALLER_CUES=None,
+        OPERATOR_CUES=None
+    ) -> List[str]:
+
+    if audio_features_list is None:
+        audio_features_list = [{} for _ in transcript_lines]
+    if role_map is None:
+        role_map = {}
+    if previous_labels is None:
+        previous_labels = []
+    
+    # Emotion → role rules (separate for text and speech models)
+    TEXT_CALLER_EMOS = {"anger", "disgust", "fear", "sadness", "surprise"}
+    TEXT_OPERATOR_EMOS = {"neutral"}
+    SPEECH_CALLER_EMOS = {"angry", "disgusted", "fearful", "sad", "surprised"}
+    SPEECH_OPERATOR_EMOS = {"neutral", "calm"}
+
+    # Pronouns for caller heuristic
+    PERSONAL_PRONOUNS = {"i", "my", "me", "we", "our", "he", "she", "him", "her"}
+
+    labels = []
+    for i, (text, audio_features) in enumerate(zip(transcript_lines, audio_features_list)):
+        txt_lower = text.lower().strip()
+        
+        # 1. Get BERT prediction (ML component)
+        bert_role, bert_conf = classify_utterance_bert(text, bert_tokenizer, bert_model, bert_device)
+        
+        # 2. Cue scores (rule-based, with regex for better matching)
+        caller_cue_score = sum(1 for cue in CALLER_CUES if re.search(r'\b' + re.escape(cue) + r'\b', txt_lower))
+        op_cue_score = sum(1 for cue in OPERATOR_CUES if re.search(r'\b' + re.escape(cue) + r'\b', txt_lower))
+        
+        # 3. Emotion scores (multimodal) - Updated to use new model
+        text_emo = segment_text_emotion(text, emotion_tokenizer, emotion_model, emotion_device)
+        speech_emo = segment_audio_emotion(audio_features['file'], audio_features['start'], audio_features['end'], audio_emo_pipe)
+        caller_emo_score = (1 if text_emo in TEXT_CALLER_EMOS else 0) + (1 if speech_emo in SPEECH_CALLER_EMOS else 0)
+        op_emo_score = (1 if text_emo in TEXT_OPERATOR_EMOS else 0) + (1 if speech_emo in SPEECH_OPERATOR_EMOS else 0)
+        # Boost caller if personal pronouns present
+        if any(p in txt_lower for p in PERSONAL_PRONOUNS):
+            caller_emo_score += 1
+        
+        # 4. Context score (e.g., operators often ask questions, alternate turns)
+        context_score_caller = 0
+        context_score_op = 0
+        if i > 0:
+            prev_label = labels[-1] if labels else previous_labels[-1] if previous_labels else "unknown"
+            # Assume alternation: if prev was operator, next likely caller
+            if prev_label == "operator":
+                context_score_caller += 1
+            elif prev_label == "caller":
+                context_score_op += 1
+        if "?" in text:  # Questions often from operator
+            context_score_op += 1
+        
+        # 5. Diarization fallback score
+        spk = spks[i] if spks else "unknown"
+        map_role = role_map.get(spk, "unknown")
+        map_score_caller = 2 if map_role == "caller" else 0
+        map_score_op = 2 if map_role == "operator" else 0
+        
+        # 6. Weighted ensemble scoring (parallel hybrid: PERML style)
+        # Weights: BERT (high), cues/emotions (medium), context/map (low)
+        caller_total = (bert_conf * 3 if bert_role == "caller" else 0) + \
+                       (caller_cue_score * 2) + (caller_emo_score * 1.5) + \
+                    context_score_caller + map_score_caller
+
+        op_total = (bert_conf * 3 if bert_role == "operator" else 0) + \
+                   (op_cue_score * 2) + (op_emo_score * 1.5) + \
+                context_score_op + map_score_op
+        
+        # Decide role
+        if caller_total > op_total + 0.5:  # Threshold to avoid ties
+            role = "caller"
+        elif op_total > caller_total + 0.5:
+            role = "operator"
+        else:
+            role = "unknown"
+        
+        labels.append(role)
+    
+    return labels
+
+# ------------------------------------------------------------------
+# Worker function (updated with pre-check and new model load)
 # ------------------------------------------------------------------
 def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None):
     """
@@ -259,13 +388,14 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
     start_time = time.time()
     successfully_processed = []
 
-    # Load models once per worker
+    # Load models once per worker (added emotion cause model)
     try:
         whisper_model, _ = safe_load_whisper_model(Config.WHISPER_MODEL)
         pipeline, _ = safe_load_pyannote_pipeline(Config.HF_TOKEN)
-        emo_pipe, _ = safe_load_hf_pipeline()  # Text-based
+        emo_pipe, _ = safe_load_hf_pipeline()  # Text-based (fallback or additional)
         audio_emo_pipe, _ = safe_load_audio_emo_pipeline()  # Speech-based
         bert_tokenizer, bert_model, bert_device = safe_load_bert_model(Config.FINETUNED_BERT_MODEL_PATH)
+        emotion_tokenizer, emotion_model, emotion_device = safe_load_emotion_cause_model(Config.FINETUNED_EMOTION_CAUSE_MODEL_PATH)  # New load
     except Exception as e:
         print(f"[!] Error initializing models for worker {mp.current_process().name}: {e}")
         return []
@@ -273,12 +403,6 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
     # Access shared cues
     CALLER_CUES = shared_data["CALLER_CUES"]
     OPERATOR_CUES = shared_data["OPERATOR_CUES"]
-
-    # Emotion → role rules (separate for text and speech models)
-    TEXT_CALLER_EMOS = {"anger", "disgust", "fear", "sadness", "surprise"}
-    TEXT_OPERATOR_EMOS = {"neutral"}
-    SPEECH_CALLER_EMOS = {"angry", "disgusted", "fearful", "sad", "surprised"}
-    SPEECH_OPERATOR_EMOS = {"neutral", "calm"}
 
     # Precompute HF content blocks (from shared, but since list, access)
     hf_content_blocks = list(shared_data["hf_content_blocks"])
@@ -358,29 +482,37 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
         if len(speaker_scores) > 1:
             role_map[speaker_scores[1][0]] = "caller"
 
+        # Collect data for batch labeling
+        segment_texts = [seg["text"].strip() for seg in segments]
+        segment_starts = [seg["start"] for seg in segments]
+        segment_ends = [seg["end"] for seg in segments]
+        segment_spks = [find_best_matching_speaker(s, e, diarization) for s, e in zip(segment_starts, segment_ends)]
+        audio_features_list = [{'file': audio_file, 'start': s, 'end': e} for s, e in zip(segment_starts, segment_ends)]
+
+        # Batch label 
+        roles = label_speaker(
+            transcript_lines=segment_texts,
+            audio_features_list=audio_features_list,
+            role_map=role_map,
+            spks=segment_spks,
+            bert_tokenizer=bert_tokenizer,
+            bert_model=bert_model,
+            bert_device=bert_device,
+            emotion_tokenizer=emotion_tokenizer,  # New
+            emotion_model=emotion_model,  # New
+            emotion_device=emotion_device,  # New
+            audio_emo_pipe=audio_emo_pipe,
+            CALLER_CUES=CALLER_CUES,
+            OPERATOR_CUES=OPERATOR_CUES
+        )
+
         merged, buffer_txt, buffer_start, buffer_end = [], [], None, None
         prev_role, prev_spk = None, None
 
-        for seg in segments:
+        for i, seg in enumerate(segments):
             s, e, txt = seg["start"], seg["end"], seg["text"].strip()
-            spk = find_best_matching_speaker(s, e, diarization)
-            bert_role = classify_utterance_bert(txt, bert_tokenizer, bert_model, bert_device)
-            text_emotion = segment_text_emotion(txt, emo_pipe)
-            speech_emotion = segment_audio_emotion(audio_file, s, e, audio_emo_pipe)
-            txt_lower = txt.lower()
-
-            if bert_role in ["operator", "caller"]:
-                role = bert_role
-            elif any(cue in txt_lower for cue in CALLER_CUES):
-                role = "caller"
-            elif any(cue in txt_lower for cue in OPERATOR_CUES):
-                role = "operator"
-            elif (text_emotion in TEXT_CALLER_EMOS or speech_emotion in SPEECH_CALLER_EMOS) and any(p in txt_lower for p in {"i", "my", "he", "she"}):
-                role = "caller"
-            elif (text_emotion in TEXT_OPERATOR_EMOS and speech_emotion in SPEECH_OPERATOR_EMOS):
-                role = "operator"
-            else:
-                role = role_map.get(spk, "unknown")
+            spk = segment_spks[i]
+            role = roles[i]
 
             new_turn = (role != prev_role) or (buffer_end and s - buffer_end > 1.5) or (spk != prev_spk)
             if new_turn and buffer_txt:
@@ -425,7 +557,7 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
         print(f"[+] Partial memory cleared after {audio_file}: {process.memory_info().rss / 1024**3:.2f} GB (rank {mp.current_process().name})")
 
     # Final cleanup
-    del whisper_model, pipeline, emo_pipe, audio_emo_pipe, bert_tokenizer, bert_model
+    del whisper_model, pipeline, emo_pipe, audio_emo_pipe, bert_tokenizer, bert_model, emotion_tokenizer, emotion_model  # Added emotion cleanup
     gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
@@ -436,7 +568,7 @@ def process_audio_file(audio_indices, shared_data, overwrite=False, gpu_id=None)
     return successfully_processed
 
 # ------------------------------------------------------------------
-# Post-finetuning bookkeeping helpers (NEW)
+# Post-finetuning bookkeeping helpers 
 # ------------------------------------------------------------------
 _FINETUNE_STATE_FILE = "last_finetune.json"
 _FINETUNE_CHUNK      = 50          # trigger every 50 new transcripts
@@ -475,7 +607,7 @@ def _run_post_finetune(new_indices):
         unseen = unseen[_FINETUNE_CHUNK:]
 
 # ------------------------------------------------------------------
-# transcribe_batch (unchanged except final two lines + HF loading + skipped write)
+# transcribe_batch 
 # ------------------------------------------------------------------
 def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     mp.set_start_method('spawn', force=True)
@@ -588,7 +720,7 @@ def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
 
-    # ------------ POST-FINETUNE TRIGGER (NEW) ------------
+    # ------------ POST-FINETUNE TRIGGER  ------------
     _run_post_finetune(successful_indices)
     # -----------------------------------------------------
 
@@ -597,7 +729,7 @@ def transcribe_batch(audio_indices, overwrite=False, num_workers_hint=None):
     return successful_indices
 
 # ------------------------------------------------------------------
-# Entry point (unchanged)
+# Entry point 
 # ------------------------------------------------------------------
 if __name__ == "__main__":
     if len(sys.argv) > 1:

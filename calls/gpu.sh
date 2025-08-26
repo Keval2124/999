@@ -3,12 +3,12 @@
 #SBATCH --job-name=dialoge_gpt_gpu_single
 #SBATCH --output=dialoge_gpt_gpu_output_%j.log
 #SBATCH --error=dialoge_gpt_gpu_error_%j.log
-#SBATCH --partition=gpu-l40s-low   
+#SBATCH --partition=gpu-a100-lowbig    
 #SBATCH --nodes=1                   # Request 1 nodes
 #SBATCH --ntasks=1                  # Request 1 task (single process)
 #SBATCH --cpus-per-task=48          # Request 48 CPUs for the task (adjust as needed)
 #SBATCH --gres=gpu:1                # Request 1 GPU
-#SBATCH --mem=300G                  # Request 300 GB RAM
+#SBATCH --mem=150G                  # Request 150 GB RAM
 #SBATCH --time=1-00:00:00           # 3-day time limit
 
 module load cuda/12.8.0-gcc14.2.0 
@@ -17,6 +17,8 @@ module load ffmpeg/7.0.2-gcc14.2.0
 module load gcc/14.2.0-gcc11.5.0 
 module purge
 
+# Load Anaconda and activate the environment
+pip install torch torchaudio transformers huggingface_hub networkx transformers[torch] 'accelerate>=0.26.0' peft importlib_metadata
 
 # Set environment variables
 export GLOO_SOCKET_IFNAME=lo
@@ -39,4 +41,9 @@ echo "Number of Tasks: $SLURM_NTASKS"
 echo "CPUs per Task: $SLURM_CPUS_PER_TASK"
 echo "========================"
 
-python finetune_audio_emotion.py 
+du -sh ~/.cache
+#python finetune_bert.py '[1, 2, 3]'
+# torchrun --nproc_per_node=40 control.py 
+python index.py 
+# Check cache size
+du -sh ~/.cache

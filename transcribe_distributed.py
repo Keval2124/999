@@ -1,14 +1,7 @@
-#!/usr/bin/env python3
 import os
 import sys
 import math
 import subprocess
-
-# Set environment variables at the very beginning
-os.environ["OMP_NUM_THREADS"] = "1"
-os.environ["MKL_NUM_THREADS"] = "1"
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
-os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
 def initialize_environment():
     """Initialize environment for worker processes"""

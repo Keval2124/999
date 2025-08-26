@@ -5,7 +5,7 @@ import torch # type: ignore
 from contextlib import nullcontext # type: ignore
 from torch.nn.parallel import DistributedDataParallel as DDP # type: ignore
 from torch.distributed import init_process_group # type: ignore
-# Assuming model.py is in the same directory or properly in the Python path
+
 from model import GPTConfig, GPT
 
 import os

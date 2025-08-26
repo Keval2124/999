@@ -78,14 +78,14 @@ else:
 # 1.  NEW UTILITY: download/cache base emotion model once
 # -----------------------------------------------------------
 def cache_base_emotion_model(model_id="j-hartmann/emotion-english-distilroberta-base",
-                             local_dir="./local_emotion_model",
-                             token=None):
+                            local_dir="./local_emotion_model",
+                            token=None):
     """Download (if necessary) and cache the base emotion model once."""
     if not os.path.isdir(local_dir):
         logger.info(f"[CACHE] Downloading {model_id} -> {local_dir}")
-        tokenizer = AutoTokenizer.from_pretrained(model_id, use_auth_token=token)
+        tokenizer = AutoTokenizer.from_pretrained(model_id, token=token)
         model = AutoModelForSequenceClassification.from_pretrained(
-            model_id, use_auth_token=token
+            model_id, token=token
         )
         tokenizer.save_pretrained(local_dir)
         model.save_pretrained(local_dir)
@@ -282,7 +282,7 @@ def finetune_main(batch_indices=None):
     # -----------------------------------------------------------
     # Ensure the base model is cached locally
     # -----------------------------------------------------------
-    cache_base_emotion_model(token=HF_TOKEN)
+    cache_base_emotion_model(token=None)
 
     # -----------------------------------------------------------
     # Load pipeline from the local copy for emotion pseudo-labeling
@@ -401,54 +401,60 @@ def finetune_main(batch_indices=None):
     
     if accelerator.is_main_process:
         logger.info("Loading tokenizer...")
-        tokenizer = AutoTokenizer.from_pretrained("j-hartmann/emotion-english-distilroberta-base", use_auth_token=HF_TOKEN)
+        tokenizer = AutoTokenizer.from_pretrained("j-hartmann/emotion-english-distilroberta-base", token=None)
         logger.info("Tokenizer loaded successfully.")
     
-    def preprocess_qa(examples):
-        questions = [q.strip() for q in examples["question"]]
-        inputs = tokenizer(
-            questions,
-            examples["context"],
-            max_length=384,
-            truncation="only_second",
-            return_offsets_mapping=True,
-            padding="max_length",
-        )
+        def preprocess_qa(examples):
+            questions = [q.strip() for q in examples["question"]]
+            inputs = tokenizer(
+                questions,
+                examples["context"],
+                max_length=384,
+                truncation="only_second",
+                return_offsets_mapping=True,
+                padding="max_length",
+            )
 
-        offset_mapping = inputs.pop("offset_mapping")
-        answers = examples["answers"]
-        start_positions = []
-        end_positions = []
+            offset_mapping = inputs.pop("offset_mapping")
+            answers = examples["answers"]
+            start_positions = []
+            end_positions = []
 
-        for i, offsets in enumerate(offset_mapping):
-            input_ids = inputs["input_ids"][i]
-            cls_index = input_ids.index(tokenizer.cls_token_id)
-            answer = answers[i]
-            if len(answer["answer_start"]) == 0:
-                start_positions.append(cls_index)
-                end_positions.append(cls_index)
-                continue
-            start_char = answer["answer_start"][0]
-            end_char = start_char + len(answer["text"][0]) - 1
-            token_start_index = 0
-            while offsets[token_start_index][0] <= start_char:
-                token_start_index += 1
-            token_end_index = len(input_ids) - 1
-            while offsets[token_end_index][1] >= end_char:
-                token_end_index -= 1
-            token_end_index += 1
+            for i, offsets in enumerate(offset_mapping):
+                input_ids = inputs["input_ids"][i]
+                cls_index = input_ids.index(tokenizer.cls_token_id)
+                answer = answers[i]
+                if len(answer["answer_start"]) == 0:
+                    start_positions.append(cls_index)
+                    end_positions.append(cls_index)
+                    continue
+                start_char = answer["answer_start"][0]
+                end_char = start_char + len(answer["text"][0])  # Make end_char exclusive
 
-            # Detect if the answer is out of the span (in which case label as CLS)
-            if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char + 1):
-                start_positions.append(cls_index)
-                end_positions.append(cls_index)
-            else:
-                start_positions.append(token_start_index - 1)
-                end_positions.append(token_end_index + 1)
+                # Find start_token
+                start_token = -1
+                for idx, offset in enumerate(offsets):
+                    if offset[0] <= start_char < offset[1]:
+                        start_token = idx
+                        break
 
-        inputs["start_positions"] = start_positions
-        inputs["end_positions"] = end_positions
-        return inputs
+                # Find end_token
+                end_token = -1
+                for idx, offset in enumerate(offsets):
+                    if offset[0] <= end_char < offset[1]:
+                        end_token = idx
+                        break
+
+                if start_token == -1 or end_token == -1:
+                    start_positions.append(cls_index)
+                    end_positions.append(cls_index)
+                else:
+                    start_positions.append(start_token)
+                    end_positions.append(end_token)
+
+            inputs["start_positions"] = start_positions
+            inputs["end_positions"] = end_positions
+            return inputs
     
     encoded = dataset.map(preprocess_qa, batched=True, remove_columns=dataset["train"].column_names, num_proc=total_cores)
     
@@ -460,11 +466,11 @@ def finetune_main(batch_indices=None):
     if os.path.exists(model_path):
         if accelerator.is_main_process:
             logger.info("Loading from previous fine-tuned model...")
-        model = AutoModelForQuestionAnswering.from_pretrained(model_path, use_auth_token=HF_TOKEN)
+        model = AutoModelForQuestionAnswering.from_pretrained(model_path, token=None)
     else:
         if accelerator.is_main_process:
             logger.info("Starting from pre-trained model...")
-        model = AutoModelForQuestionAnswering.from_pretrained("deepset/roberta-base-squad2", use_auth_token=HF_TOKEN)  # Use a QA-pretrained RoBERTa
+        model = AutoModelForQuestionAnswering.from_pretrained("deepset/roberta-base-squad2", token=None)  # Use a QA-pretrained RoBERTa
     
     args = TrainingArguments(
         output_dir=temp_model_path,

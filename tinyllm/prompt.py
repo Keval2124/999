@@ -33,4 +33,6 @@ result = generator(
     pad_token_id=tokenizer.pad_token_id
 )
 
-print(result[0]['generated_text'])
+#save output
+with open('911_Caller.txt', 'w', encoding='utf-8') as f:
+    f.write(result[0]['generated_text'])

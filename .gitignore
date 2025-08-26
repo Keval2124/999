@@ -21,11 +21,11 @@ wav_folder
 911_recordings/
 output
 
-*.log
-fine_tuned_bert_role_classifier
-granite_model_local
+*.logs
 logs
-.sh
+
+fine_tuned_bert_role_classifier
+fine_tuned_emotion_cause_model
 nltk_data
 mlruns
 
