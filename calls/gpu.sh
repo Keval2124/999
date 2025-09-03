@@ -3,7 +3,7 @@
 #SBATCH --job-name=dialoge_gpt_gpu_single
 #SBATCH --output=dialoge_gpt_gpu_output_%j.log
 #SBATCH --error=dialoge_gpt_gpu_error_%j.log
-#SBATCH --partition=gpu-a100-lowbig    
+#SBATCH --partition=gpu-a-lowsmall    
 #SBATCH --nodes=1                   # Request 1 nodes
 #SBATCH --ntasks=1                  # Request 1 task (single process)
 #SBATCH --cpus-per-task=48          # Request 48 CPUs for the task (adjust as needed)
@@ -42,8 +42,7 @@ echo "CPUs per Task: $SLURM_CPUS_PER_TASK"
 echo "========================"
 
 du -sh ~/.cache
-#python finetune_bert.py '[1, 2, 3]'
-# torchrun --nproc_per_node=40 control.py 
+
 python index.py 
 # Check cache size
 du -sh ~/.cache

@@ -1,14 +1,3 @@
-#!/usr/bin/env python3
-"""
-train_999.py
-Fine-tunes TinyLlama with LoRA on 999 emergency transcripts.
-Expects:
-  /mnt/scratch/users/sgkshah/999/output/*.txt   – transcripts
-  /mnt/scratch/users/sgkshah/999/sample.json    – optional side info
-Produces:
-  /mnt/scratch/users/sgkshah/999/tinyllm-lora   – LoRA adapter
-"""
-
 import os
 import json
 import glob
@@ -195,20 +184,13 @@ class StopOnLrIncreaseCallback(TrainerCallback):
             
         # Check if LR has increased
         if self.previous_lr is not None and current_lr > self.previous_lr:
-            print(f"\n🚨 Learning rate increased from {self.previous_lr:.2e} to {current_lr:.2e}")
-            print("🛑 Stopping training early")
+            print(f"\nLearning rate increased from {self.previous_lr:.2e} to {current_lr:.2e}")
+            print("Stopping training early")
             control.should_training_stop = True
             
         # Update previous LR
         self.previous_lr = current_lr
 
-# ------------------------------------------------
-# 5. Metrics (REMOVED - now handled in callback)
-# ------------------------------------------------
-
-# ------------------------------------------------
-# 6. MLflow run
-# ------------------------------------------------
 mlflow.set_tracking_uri(f"file://{MLFLOW_DIR}")
 mlflow.set_experiment("tinyllm_finetuning")
 
