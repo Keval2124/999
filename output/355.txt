@@ -1,0 +1,63 @@
+[0:00:01] operator: 911, what is the emergency?
+[0:00:03] caller: 850 Highland Boulevard at the Old Convent.
+[0:00:03] caller: There's a fire.
+[0:00:09] operator: There's a fire at what address, ma'am?
+[0:00:13] caller: 850 Highland Boulevard, but they have to come in through Columbia.
+[0:00:13] caller: It's the Old Convent.
+[0:00:18] operator: What's on fire?
+[0:00:20] caller: The house.
+[0:00:20] caller: We have an old house, and it's burning down.
+[0:00:24] operator: Okay, is this in Staten Island?
+[0:00:27] caller: Staten Island.
+[0:00:28] operator: What streets is that in between?
+[0:00:30] caller: Oh, it's between Sand Lane and you have to take Highland Boulevard, make a right on Singapore and a right on Columbia.
+[0:00:41] operator: Okay, ma'am.
+[0:00:41] operator: Are you sure the building number is 850?
+[0:00:46] caller: Am I sure?
+[0:00:46] caller: It's 850.
+[0:00:46] caller: That's the school.
+[0:00:46] caller: They have to go past the school, go around, make the right on Fingerboard and the right on Columbia, but please hurry because it's coming.
+[0:00:59] caller: Okay, that range number is not appropriate for me.
+[0:01:04] operator: So can you give me the cross streets, Highland Boulevard between what and what?
+[0:01:10] caller: Highland Boulevard.
+[0:01:14] operator: Are you inside the location that's on fire, ma'am?
+[0:01:17] caller: Yes, I am.
+[0:01:18] operator: Okay, ma'am.
+[0:01:18] caller: Tell me, Highland Boulevard, between what and what?
+[0:01:18] caller: Highland Boulevard, and it's on Sand Lane, and you have to go.
+[0:01:32] caller: It's Highland Boulevard.
+[0:01:32] caller: Please hurry.
+[0:01:35] operator: Ma'am, is there someone else there I could speak to?
+[0:01:39] caller: No, I don't think they're here.
+[0:01:39] caller: I think I'm the only one in the house because we just moved.
+[0:01:42] operator: Okay, ma'am, I need you to relax so I can get some help there.
+[0:01:46] caller: It's Highland Boulevard, Sand Lane, and what?
+[0:01:46] caller: No, not Sand Lane.
+[0:01:46] caller: Highland Boulevard.
+[0:01:46] caller: You have to pass 850 Highland Boulevard, make a right on fingerboard, and a right on Columbia.
+[0:02:09] operator: Is that West Fingerboard Road?
+[0:02:11] caller: No.
+[0:02:11] caller: fingerboard and then a right on the fire department please
+[0:02:29] caller: hi hi I like that an island and a croaking there for the information with
+[0:02:37] operator: What's the address?
+[0:02:38] caller: 850 Highland Boulevard.
+[0:02:38] caller: 850 Highland.
+[0:02:38] caller: What little cool streets there.
+[0:02:44] caller: Well, it's 850 Highland Boulevard.
+[0:02:44] caller: Go past 850 Highland Boulevard.
+[0:02:44] caller: Make a right on Fingerboard and a right on Columbia.
+[0:02:44] caller: And then come straight up into our property.
+[0:02:44] caller: Okay.
+[0:02:59] operator: What's the emergency there?
+[0:03:01] caller: There's a fire in our house.
+[0:03:01] caller: We built a new house.
+[0:03:01] caller: The old house is on fire.
+[0:03:07] operator: Okay, is that off of Sand Lane?
+[0:03:09] caller: Yes.
+[0:03:09] caller: Hello?
+[0:03:09] caller: Yes.
+[0:03:13] operator: What's the phone number that you're calling from?
+[0:03:17] caller: 347-224-4310.
+[0:03:17] caller: Yeah, the fire department's responding.
+[0:03:22] operator: They're on their way.
+[0:03:22] caller: 75.

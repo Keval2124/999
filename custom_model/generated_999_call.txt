@@ -1,0 +1,12 @@
+operator: 999, what's your emergency?
+caller: there's a fire.
+operator: what's your address?
+caller: 5045.
+operator: what's your name?
+caller: dylan.
+operator: what's your last name?
+caller: ancory.
+operator: where's your friend?
+caller: they're in the door closet.
+operator: okay, we'll send somebody out.
+caller: thank you.

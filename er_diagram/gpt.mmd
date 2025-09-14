@@ -1,0 +1,45 @@
+classDiagram
+    direction TB
+    class GPTLanguageModel {
+        +token_embedding_table: nn.Embedding
+        +position_embedding_table: nn.Embedding
+        +blocks: nn.Sequential~Block~
+        +ln_f: nn.LayerNorm
+        +lm_head: nn.Linear
+        +__init__()
+        +forward(idx, targets=None)
+        +generate(idx, max_new_tokens)
+    }
+    class Block {
+        +sa: MultiHeadAttention
+        +ffwd: FeedForward
+        +ln1: nn.LayerNorm
+        +ln2: nn.LayerNorm
+        +__init__(n_embd, n_head)
+        +forward(x)
+    }
+    class MultiHeadAttention {
+        +heads: nn.ModuleList~Head~
+        +proj: nn.Linear
+        +dropout: nn.Dropout
+        +__init__(num_heads, head_size)
+        +forward(x)
+    }
+    class Head {
+        +key: nn.Linear
+        +query: nn.Linear
+        +value: nn.Linear
+        +dropout: nn.Dropout
+        +__init__(head_size)
+        +forward(x)
+    }
+    class FeedForward {
+        +net: nn.Sequential
+        +__init__(n_embd)
+        +forward(x)
+    }
+
+    GPTLanguageModel o-- Block : blocks
+    Block o-- MultiHeadAttention : sa
+    Block o-- FeedForward : ffwd
+    MultiHeadAttention o-- Head : heads

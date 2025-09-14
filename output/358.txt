@@ -1,0 +1,55 @@
+[0:00:01] caller: 22, 22, 19, 23.
+[0:00:04] caller: 22, 19.
+[0:00:08] caller: Shots fired!
+[0:00:08] caller: Officers down!
+[0:00:08] caller: Officers down!
+[0:00:16] operator: 22, all units, shots fired, officers
+[0:00:19] caller: down.
+[0:00:19] caller: 6004, Rachel Court, 6004, Rachel Court.
+[0:00:19] caller: 22, put
+[0:00:27] operator: Put staff right in the air, 22-1 and 22-2 and 22-50.
+[0:00:32] operator: 22-14.
+[0:00:38] operator: 22-15, is 16 on scene there?
+[0:00:42] operator: 16 is on scene.
+[0:00:45] caller: Okay.
+[0:00:49] caller: This is for 22-19.
+[0:00:49] caller: I'm down, I can't move.
+[0:00:54] caller: Another officer is down.
+[0:00:54] caller: I'm not sure of his status.
+[0:00:54] caller: Subject in the house with a rifle.
+[0:00:54] caller: He's caution on approach.
+[0:00:54] caller: He shot us both.
+[0:01:06] caller: He shot us both from inside the house.
+[0:01:06] caller: He might be coming back to finish us off.
+[0:01:06] caller: I can't see where he's at.
+[0:01:06] caller: He has to take my head out.
+[0:01:06] caller: I believe he has a high-powered rifle.
+[0:01:06] caller: My leg is destroyed.
+[0:01:06] caller: I can't move.
+[0:01:06] caller: I'm just holed up behind my car here.
+[0:01:06] caller: 10-43.
+[0:01:06] caller: I'm losing consciousness.
+[0:01:30] caller: I'm not sure if I'll be able to stay conscious to find our position here.
+[0:01:36] operator: Clear 22-19, just stay with us.
+[0:01:36] operator: Stay with us.
+[0:01:36] operator: We do have help on the way.
+[0:01:36] operator: If you can maintain a visual, do so.
+[0:01:36] operator: Just stay with us and hang on.
+[0:01:50] caller: 19 is on the scene.
+[0:01:50] caller: More shots fired.
+[0:01:50] caller: I'll be out on foot.
+[0:01:50] caller: I have my mobile with me.
+[0:01:50] caller: Cell phone.
+[0:01:58] caller: 22-9.
+[0:02:01] caller: 14, send 23.
+[0:02:01] caller: 14, send 23.
+[0:02:05] caller: 14.
+[0:02:07] caller: I'm shutting the intersection down here at Cordon Ridge.
+[0:02:11] operator: 22-14.
+[0:02:14] operator: 307 radio.
+[0:02:14] operator: 307 go ahead.
+[0:02:20] operator: Suspect is fighting multiple shots trying to get a visual to time from a distance.
+[0:02:20] operator: Stand by.
+[0:02:28] caller: 307.
+[0:02:54] operator: Clear 2219.
+[0:02:54] operator: 12216, if you can copy, click your mic.

@@ -1,0 +1,99 @@
+[0:00:00] caller: 911, this is Sandra Cordo.
+[0:00:00] caller: What is your emergency?
+[0:00:00] caller: Hi, something just exploded at the end of Fayette.
+[0:00:07] operator: Okay, is there any fire?
+[0:00:09] caller: There's fire.
+[0:00:09] caller: Okay.
+[0:00:09] caller: It was a big boom.
+[0:00:09] caller: It shook the house, and I'm on Elliott.
+[0:00:15] operator: Okay.
+[0:00:15] operator: All right, so do you see fire from your window now?
+[0:00:18] caller: I do.
+[0:00:18] caller: Okay.
+[0:00:20] operator: At the end of Elliott Road, so Elliott at Durant?
+[0:00:23] caller: At the end of Fayette.
+[0:00:23] caller: I can see it from Elliott.
+[0:00:23] caller: Okay.
+[0:00:28] operator: All right, what's your name?
+[0:00:30] caller: Sandy Foster.
+[0:00:31] operator: All right, I'll get him out.
+[0:00:32] caller: Thank you.
+[0:00:32] caller: Thank you.
+[0:00:33] operator: Bye-bye.
+[0:00:43] caller: 911, this line's recorded.
+[0:00:44] operator: What's your emergency?
+[0:00:45] caller: I think there was an airplane crash.
+[0:00:48] operator: Okay, where do you think it was?
+[0:00:50] operator: Let me see if I can figure out what road I'm on.
+[0:00:52] caller: I'm not that familiar with the neighborhood.
+[0:00:52] caller: It's near Hanscom.
+[0:00:57] operator: Near Hanscom?
+[0:00:57] operator: Yep.
+[0:00:57] operator: Okay.
+[0:00:57] operator: What's your name, sir?
+[0:00:57] operator: My name is Mike Stevens.
+[0:01:02] caller: The back highway to Hanscom.
+[0:01:02] caller: The back highway to Hanscom.
+[0:01:06] caller: What's your phone number?
+[0:01:06] caller: 617-966.
+[0:01:06] caller: There's a giant column of smoking planes.
+[0:01:13] operator: Yep.
+[0:01:13] operator: We do have officers heading that way right now.
+[0:01:13] operator: I just need your phone number for you.
+[0:01:17] caller: Okay.
+[0:01:17] caller: My phone is 617-966-4997.
+[0:01:23] operator: All right.
+[0:01:23] operator: We have people heading that way.
+[0:01:23] operator: Thank you for the call.
+[0:01:26] caller: Yep.
+[0:01:35] caller: Hi, Bradley, the sign's recorded.
+[0:01:35] caller: Hi, I was at 16 Fayette Road.
+[0:01:35] caller: Yep.
+[0:01:35] caller: And all of a sudden I'm, like, sleeping, and all of a sudden I heard this huge, like, huge boom.
+[0:01:35] caller: Okay.
+[0:01:35] caller: And I look out my window, and the house across the street right behind it, which is his base, It looked like the atomic bomb went off.
+[0:01:35] caller: Okay.
+[0:01:35] caller: And it was a mushroom cloud, and fire was going everywhere.
+[0:02:00] operator: Do you know anything about this?
+[0:02:01] caller: Okay.
+[0:02:01] caller: We have had several calls on it.
+[0:02:03] operator: We do have units heading in that direction.
+[0:02:06] caller: We don't know exactly what it is just yet.
+[0:02:06] caller: Okay.
+[0:02:06] caller: Okay?
+[0:02:10] operator: Do I need to?
+[0:02:11] caller: It's close to my house.
+[0:02:11] caller: It looks like there's fire.
+[0:02:11] caller: I don't know if it's in the trees.
+[0:02:11] caller: Should I, like?
+[0:02:16] operator: We have police and fire both in route.
+[0:02:16] operator: We're going to try and get in touch with the base right now, okay?
+[0:02:20] caller: Okay.
+[0:02:20] caller: Oh, and then we just, they type it.
+[0:02:20] caller: Okay.
+[0:02:25] operator: What was that, ma'am?
+[0:02:26] caller: I can't hear you.
+[0:02:26] caller: Should we, like, get out of here?
+[0:02:26] caller: Or I don't know.
+[0:02:26] caller: I can't make that call right now, ma'am, because I don't know what's going on.
+[0:02:26] caller: Okay.
+[0:02:37] caller: Okay.
+[0:02:37] operator: Should I call back later?
+[0:02:39] caller: I'm here on 2145.
+[0:02:40] operator: If you want to give us a call back later, absolutely.
+[0:02:40] operator: We'll have more information then, okay?
+[0:02:44] caller: Thank you.
+[0:02:45] operator: Bye-bye.
+[0:02:45] caller: All right.
+[0:02:45] operator: Bye-bye.
+[0:02:53] caller: 911, this is Roger Carter.
+[0:02:54] operator: What is your emergency?
+[0:02:55] caller: Hi, I'm on Hartwell Avenue.
+[0:02:55] caller: I see a huge fire.
+[0:02:55] caller: I don't know if anyone's called it in, but it's behind all the businesses.
+[0:03:03] operator: It's behind where?
+[0:03:04] caller: All of, like, the big office buildings off of Hartwell Avenue.
+[0:03:04] caller: It's behind all the office buildings at Hartwell Avenue.
+[0:03:04] caller: Okay, thank you very much.
+[0:03:04] caller: All right, bye.
+[0:03:11] operator: Bye-bye.

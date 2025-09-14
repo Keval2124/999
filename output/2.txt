@@ -1,0 +1,29 @@
+[0:00:00] caller: Ma'am, my pickup was stolen.
+[0:00:00] caller: I had to go find it.
+[0:00:05] unknown: Please help us.
+[0:00:05] unknown: My girlfriend is really freezing.
+[0:00:09] caller: We can't get out of here.
+[0:00:12] operator: You can't get out of where?
+[0:00:14] caller: We can't get out.
+[0:00:14] caller: We don't know if we are...
+[0:00:18] unknown: They don't speak English or anything.
+[0:00:18] unknown: They don't talk to us.
+[0:00:23] caller: Who?
+[0:00:23] caller: The people here.
+[0:00:25] operator: So somebody locked you in this building?
+[0:00:27] caller: No, but we don't know if they'll...
+[0:00:32] operator: And if we could walk from getting out of this building and walking,
+[0:00:37] caller: I cannot guarantee we'll make it before we freeze.
+[0:00:37] caller: I guarantee she can.
+[0:00:37] caller: She's pissed her pants twice and she's frozen.
+[0:00:45] operator: Sir, you're at 76 and Poppleton.
+[0:00:45] operator: You don't have to walk very far to get somewhere, okay?
+[0:00:50] caller: It's not like you're in the middle of nowhere.
+[0:00:50] caller: Yeah, but we're here about a quarter mile from...
+[0:00:50] caller: It may be a quarter of a mile from 75th.
+[0:00:50] caller: That's all I'm saying.
+[0:00:59] operator: Can you please just go in a little bit?
+[0:01:01] caller: No, I can't help you tonight.
+[0:01:03] operator: You have to help yourself.
+[0:01:03] operator: Okay.
+[0:01:03] operator: Bye-bye.

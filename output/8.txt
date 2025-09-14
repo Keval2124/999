@@ -1,0 +1,64 @@
+[0:00:02] operator: 911, what is your emergency?
+[0:00:04] caller: I'm walking in the field.
+[0:00:04] caller: I don't know where I am.
+[0:00:07] operator: You're walking in the field?
+[0:00:07] operator: Okay, I need you to just stop, okay?
+[0:00:07] operator: I'm going to try to find you on my screen.
+[0:00:07] operator: Did you go in the ditch?
+[0:00:13] caller: Yes, and then we started walking.
+[0:00:13] caller: We thought we were close enough.
+[0:00:16] operator: Okay, can you go back to your vehicle?
+[0:00:18] caller: I can't.
+[0:00:18] caller: I don't know where it is.
+[0:00:18] caller: You don't know where it is, okay.
+[0:00:24] operator: All right, I want you to just stay in line with me.
+[0:00:24] operator: It looks like I can find you.
+[0:00:28] caller: Oh, you're out on the prairie.
+[0:00:28] caller: One second.
+[0:00:32] operator: What road were you driving on?
+[0:00:35] caller: We were coming up this road.
+[0:00:35] caller: Okay, one second.
+[0:00:44] caller: Hello?
+[0:00:54] caller: Hello?
+[0:00:55] operator: Okay, I'm still online with you, okay?
+[0:00:59] caller: I've got a car I've got to call for two days.
+[0:01:03] caller: Okay.
+[0:01:04] operator: How many people are with you?
+[0:01:06] caller: Me and one other person.
+[0:01:06] caller: Okay.
+[0:01:08] operator: I want you to just...
+[0:01:08] operator: Which way?
+[0:01:08] operator: Do you remember which way you were walking or you totally got turned around?
+[0:01:15] caller: No, I don't know.
+[0:01:15] caller: Okay.
+[0:01:17] operator: What I want you to do is I'm just trying to pull you up on the map right now again to see if I can find a different location of which way that you're actually walking towards if you moved at all.
+[0:01:29] caller: Okay.
+[0:01:31] operator: What I want you to do is can you, which, you don't know which way, can you start walking, oh, I don't, I need you to start walking.
+[0:01:31] operator: You don't know which way west is at all?
+[0:01:31] operator: You don't know which way prairie road is?
+[0:01:42] caller: I don't.
+[0:01:42] caller: You have no which...
+[0:01:42] caller: I don't know.
+[0:01:42] caller: I don't know.
+[0:01:48] caller: Okay.
+[0:01:49] operator: I want you to start walking.
+[0:01:49] operator: You're going to have to start walking one way or the other, and at least then I'm going to be able to tell you which way to go, okay?
+[0:01:59] operator: Do you have enough clothing on?
+[0:02:02] caller: No, I came from a wedding.
+[0:02:02] caller: I don't have any clothes on.
+[0:02:02] caller: Okay.
+[0:02:02] caller: All right.
+[0:02:08] operator: Alright, I'm going to page out some people then obviously to help find you, okay?
+[0:02:17] caller: Okay, and that's what I'm going to do, okay?
+[0:02:32] operator: Okay, I want you to stay in line with me, okay?
+[0:02:35] caller: I'm trying.
+[0:02:35] caller: I'm trying.
+[0:02:35] caller: Okay.
+[0:02:52] caller: I can't get over it.
+[0:03:08] caller: Awww!
+[0:03:08] caller: Come on!
+[0:03:19] caller: Please hold me!
+[0:03:23] caller: Hello?
+[0:03:26] caller: Hello?
+[0:03:28] caller: Hello?
+[0:03:40] caller: Thank you.

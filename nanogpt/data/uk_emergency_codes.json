@@ -1,0 +1,480 @@
+{
+	"police_codes": {
+		"state_codes": {
+			"description": "UK Police operational status codes used across forces",
+			"codes": {
+				"State 0": "Emergency Assistance / Panic",
+				"State 1": "On duty",
+				"State 2": "On patrol",
+				"State 3": "At station (available)",
+				"State 4": "Refreshments / On break",
+				"State 5": "En route to incident",
+				"State 6": "At scene",
+				"State 7": "Committed - deployable",
+				"State 8": "Committed - not deployable",
+				"State 9": "Prisoner escort needed",
+				"State 10": "At court",
+				"State 11": "Off duty",
+				"State 12": "Confidential message",
+				"State 13": "Non-urgent callback",
+				"State 14": "Urgent callback",
+				"State 15": "Received",
+				"State 16": "Repeat"
+			}
+		},
+		"police_force_codes": {
+			"description": "Organizational Unit (OU) codes for UK police forces",
+			"codes": {
+				"01": "London - Metropolitan Police",
+				"02": "London - Metropolitan Police (special)",
+				"03": "Cumbria Constabulary",
+				"04": "Lancashire Constabulary",
+				"05": "Merseyside Police",
+				"06": "Greater Manchester Police",
+				"07": "Cheshire Constabulary",
+				"10": "Northumbria Police",
+				"11": "Durham Constabulary",
+				"12": "North Yorkshire Police",
+				"13": "West Yorkshire Police",
+				"14": "South Yorkshire Police",
+				"16": "Humberside Police",
+				"17": "Cleveland Police",
+				"20": "West Midlands Police",
+				"21": "Staffordshire Police",
+				"22": "West Mercia Police",
+				"23": "Warwickshire Police",
+				"30": "Derbyshire Constabulary",
+				"31": "Nottinghamshire Police",
+				"32": "Lincolnshire Police",
+				"33": "Leicestershire Constabulary",
+				"34": "Northamptonshire Police",
+				"35": "Cambridgeshire Constabulary",
+				"36": "Norfolk Constabulary",
+				"37": "Suffolk Constabulary",
+				"40": "Bedfordshire Police",
+				"41": "Hertfordshire Constabulary",
+				"42": "Essex Police",
+				"43": "Thames Valley Police",
+				"44": "Hampshire Constabulary",
+				"45": "Surrey Police",
+				"46": "Kent Police",
+				"47": "Sussex Police",
+				"48": "City of London Police",
+				"50": "Devon and Cornwall Police",
+				"52": "Avon and Somerset Constabulary",
+				"53": "Gloucestershire Constabulary",
+				"54": "Wiltshire Police",
+				"55": "Dorset Police",
+				"60": "North Wales Police",
+				"61": "Gwent Police",
+				"62": "South Wales Police",
+				"63": "Dyfed-Powys Police",
+				"84": "Police Scotland"
+			}
+		},
+		"radio_codes": {
+			"description": "Historical Home Office radio codes for police forces",
+			"codes": {
+				"MP": "Metropolitan Police",
+				"GT": "Metropolitan Police (special events)",
+				"BB": "Cumbria Constabulary",
+				"BD": "Lancashire Constabulary",
+				"CH": "Merseyside Police",
+				"CK": "Greater Manchester Police",
+				"BA": "Cheshire Constabulary",
+				"LB": "Northumbria Police",
+				"LA": "Durham Constabulary",
+				"XN": "North Yorkshire Police",
+				"XW": "West Yorkshire Police",
+				"XS": "South Yorkshire Police",
+				"XH": "Humberside Police",
+				"LZ": "Cleveland Police",
+				"YM": "West Midlands Police",
+				"YF": "Staffordshire Police",
+				"YK": "West Mercia Police",
+				"YJ": "Warwickshire Police",
+				"NA": "Derbyshire Constabulary",
+				"NH": "Nottinghamshire Police",
+				"NC": "Lincolnshire Police",
+				"NL": "Leicestershire Constabulary",
+				"NG": "Northamptonshire Police",
+				"VB": "Cambridgeshire Constabulary",
+				"VK": "Norfolk Constabulary",
+				"VL": "Suffolk Constabulary",
+				"VA": "Bedfordshire Police",
+				"VH": "Hertfordshire Constabulary",
+				"VG": "Essex Police",
+				"HB": "Thames Valley Police",
+				"HC": "Hampshire Constabulary",
+				"HJ": "Surrey Police",
+				"KA": "Kent Police",
+				"KB": "Sussex Police",
+				"CP": "City of London Police",
+				"QB": "Devon and Cornwall Police",
+				"QP": "Avon and Somerset Constabulary",
+				"QL": "Gloucestershire Constabulary",
+				"QJ": "Wiltshire Police",
+				"QC": "Dorset Police"
+			}
+		},
+		"ten_codes": {
+			"description": "Police 10-codes (APCO standard codes used by some UK forces)",
+			"codes": {
+				"10-0": "Use Caution",
+				"10-1": "Signal Weak",
+				"10-2": "Signal Good",
+				"10-3": "Stop Transmitting",
+				"10-4": "Affirmative (OK)",
+				"10-5": "Relay To/From",
+				"10-6": "Busy",
+				"10-7": "Out of Service",
+				"10-8": "In Service",
+				"10-9": "Say Again",
+				"10-10": "Negative",
+				"10-11": "On Duty (Employee Number)",
+				"10-12": "Stand By (Stop)",
+				"10-13": "Weather Conditions",
+				"10-14": "Message/Information",
+				"10-15": "Message Delivered",
+				"10-16": "Reply to Message",
+				"10-17": "En route",
+				"10-18": "Urgent",
+				"10-19": "(In) Contact",
+				"10-20": "Location",
+				"10-21": "Call by Phone",
+				"10-22": "Disregard",
+				"10-23": "Arrived at Scene",
+				"10-24": "Assignment Completed",
+				"10-25": "Report to (Meet)",
+				"10-26": "Estimated Arrival Time",
+				"10-27": "License/Permit Information",
+				"10-28": "Vehicle Information",
+				"10-29": "Records Check",
+				"10-30": "Danger/Caution",
+				"10-31": "Pick Up",
+				"10-32": "Units Needed (Specify)",
+				"10-33": "Need Immediate Assistance",
+				"10-34": "Current Time",
+				"10-40": "Fight in Progress",
+				"10-41": "Beginning Tour of Duty",
+				"10-42": "Ending Tour of Duty",
+				"10-43": "In Pursuit",
+				"10-44": "Riot",
+				"10-45": "Bomb Threat / Bank Alarm",
+				"10-47": "Complete Assignment Quickly",
+				"10-48": "Detaining Suspect, Expedite",
+				"10-49": "Drag Racing",
+				"10-50": "Vehicle Accident",
+				"10-51": "Dispatch Wrecker",
+				"10-52": "Dispatch Ambulance",
+				"10-53": "Road Blocked",
+				"10-54": "Hit and Run Accident",
+				"10-55": "Intoxicated Driver",
+				"10-56": "Intoxicated Pedestrian",
+				"10-57": "Request BT Operator",
+				"10-58": "Direct Traffic",
+				"10-59": "Escort",
+				"10-60": "Suspicious Vehicle",
+				"10-61": "Stopping Suspicious Vehicle",
+				"10-62": "B and E in Progress",
+				"10-63": "Prepare to Receive Assignment",
+				"10-64": "Crime in Progress",
+				"10-65": "Armed Robbery",
+				"10-66": "Notify Medical Examiner",
+				"10-67": "Report of Death",
+				"10-68": "Livestock in Roadway",
+				"10-69": "Advise Telephone Number",
+				"10-70": "Improper Parked Vehicle",
+				"10-71": "Improper Use of Radio",
+				"10-72": "Prisoner in Custody",
+				"10-73": "Mental Subject",
+				"10-74": "Prison/Jail Break",
+				"10-75": "Wanted or Stolen",
+				"10-76": "Prowler",
+				"10-77": "Direct Traffic at Fire Scene",
+				"10-80": "Fire Alarm",
+				"10-81": "Nature of Fire",
+				"10-82": "Fire in Progress",
+				"10-83": "Smoke Visible",
+				"10-84": "No Smoke Visible",
+				"10-85": "Respond Without Blue Lights/Siren"
+			}
+		}
+	},
+	"ambulance_codes": {
+		"response_categories": {
+			"description": "NHS ambulance response categories implemented across UK since 2017",
+			"codes": {
+				"Category 1": {
+					"description": "Immediate life-threatening conditions (cardiac arrest, choking, unconscious, continuous seizure, major trauma, severe allergic reactions)",
+					"response_time_target": "7 minutes (average)",
+					"equipment": "Always uses lights and sirens"
+				},
+				"Category 2": {
+					"description": "Emergency calls (stroke, chest pain, major burns, sepsis, road traffic collisions)",
+					"response_time_target": "18 minutes (average), 40 minutes (90th percentile)",
+					"equipment": "Always uses lights and sirens"
+				},
+				"Category 3": {
+					"description": "Urgent calls (falls, diabetic problems, isolated limb fractures, abdominal pain)",
+					"response_time_target": "120 minutes (90th percentile)",
+					"equipment": "Usually uses lights and sirens (service policy dependent)"
+				},
+				"Category 4": {
+					"description": "Less urgent calls (diarrhoea, vomiting, non-traumatic back pain)",
+					"response_time_target": "180 minutes (90th percentile)",
+					"equipment": "Not usually lights and sirens"
+				},
+				"Category 5": {
+					"description": "Calls managed through hear and treat / telephone advice",
+					"response_time_target": "Telephone assessment only",
+					"equipment": "No physical response"
+				},
+				"GP Urgent": {
+					"description": "GP urgent admissions, urgent inter-hospital transfers",
+					"response_time_target": "1-4 hours or scheduled timeframe",
+					"equipment": "Not usually lights and sirens"
+				}
+			}
+		},
+		"northern_ambulance_codes": {
+			"description": "Northern Ambulance Alliance codes and operational procedures",
+			"response_codes": {
+				"Priority 0": "Emergency - immediate threat to life (resuscitation required)",
+				"Priority 1": "Emergency call (15 minute target for 90% of calls)",
+				"Priority 2": "Urgent call (25 minute target for 90% of calls)",
+				"Priority 3": "Non-urgent call (60 minute target for 90% of calls)"
+			}
+		},
+		"medical_codes": {
+			"description": "Medical emergency codes used in healthcare settings",
+			"hospital_codes": {
+				"2222": "Adult cardiac arrest / medical emergency",
+				"3333": "Security alert",
+				"4444": "Fire alert",
+				"Code Blue": "Cardiac/respiratory arrest",
+				"Code Red": "Fire emergency",
+				"Code Black": "Bomb threat/suspicious package",
+				"Code Brown": "Chemical spill/hazardous material",
+				"Code Green": "Evacuation",
+				"Code Grey": "System failure/infrastructure loss",
+				"Code Orange": "Mass casualty incident/external disaster",
+				"Code Pink": "Pediatric emergency/missing child",
+				"Code Purple": "Hostage situation",
+				"Code Silver": "Active shooter/weapon situation",
+				"Code White": "Violent/aggressive person",
+				"Code Yellow": "Missing patient"
+			}
+		},
+		"prison_medical_codes": {
+			"description": "Medical emergency response codes for UK prisons (HMPPS)",
+			"codes": {
+				"Code Red": "Severe loss of blood, severe burns or scalds, suspected fractures",
+				"Code Blue": "Chest pain, difficulty breathing, unconscious, choking, fitting/concussed, severe allergic reaction, suspected stroke"
+			},
+			"mandatory_responses": {
+				"Code Red": [
+					"Communication/Control Room automatically calls ambulance",
+					"Duty nurse attends with necessary equipment",
+					"Gate prepares to receive ambulance",
+					"Ambulance escort staff arranged",
+					"Escort staff and equipment arranged"
+				],
+				"Code Blue": [
+					"Communication/Control Room automatically calls ambulance",
+					"Duty nurse attends with necessary equipment",
+					"Gate prepares to receive ambulance",
+					"Ambulance escort staff arranged",
+					"Escort staff and equipment arranged"
+				]
+			}
+		}
+	},
+	"fire_service_codes": {
+		"fire_brigade_authority_codes": {
+			"description": "Official identification codes for UK fire and rescue services",
+			"england": {
+				"0100": "Avon Fire Brigade",
+				"0200": "Bedfordshire & Luton Fire & Rescue Service",
+				"0300": "Buckinghamshire Fire & Rescue Service",
+				"0400": "Cambridgeshire Fire & Rescue Service",
+				"0500": "Cheshire Fire Service",
+				"0600": "Cleveland Fire Brigade",
+				"0700": "Cornwall County Fire Brigade",
+				"0800": "County Durham & Darlington Fire & Rescue Brigade",
+				"0900": "Cumbria County Fire Service",
+				"1000": "Derbyshire Fire & Rescue Service",
+				"1100": "Devon Fire & Rescue Service",
+				"1200": "Dorset Fire & Rescue Service",
+				"1300": "East Sussex Fire Brigade",
+				"1400": "Essex County Fire & Rescue Service",
+				"1500": "Gloucestershire Fire & Rescue Service",
+				"1600": "Greater Manchester County Fire Service",
+				"1700": "Hampshire Fire & Rescue Service",
+				"1800": "Hereford & Worcester Fire Brigade",
+				"1900": "Hertfordshire Fire & Rescue Service",
+				"2000": "Humberside Fire Brigade",
+				"2100": "Isle of Wight Fire & Rescue Service",
+				"2200": "Isles of Scilly Fire Brigade",
+				"2300": "Kent Fire Brigade",
+				"2400": "Lancashire Fire & Rescue Service",
+				"2500": "Leicestershire Fire & Rescue Service",
+				"2600": "Lincolnshire Fire & Rescue",
+				"2700": "London Fire Brigade",
+				"2800": "Merseyside Fire Service",
+				"2900": "Norfolk Fire Service",
+				"3000": "North Yorkshire Fire & Rescue Service",
+				"3100": "Northamptonshire Fire & Rescue Service",
+				"3200": "Northumberland Fire & Rescue Service",
+				"3300": "Nottinghamshire and City of Nottingham Fire Authority",
+				"3400": "Oxfordshire Fire & Rescue Service",
+				"3500": "Royal Berkshire Fire & Rescue Service",
+				"3600": "Shropshire Fire & Rescue Service",
+				"3700": "Somerset Fire Brigade",
+				"3800": "South Yorkshire Fire & Rescue Service",
+				"3900": "Staffordshire Fire & Rescue Service",
+				"4000": "Suffolk County Fire Service",
+				"4100": "Surrey Fire & Rescue Service",
+				"4200": "Tyne & Wear Metropolitan Fire Brigade",
+				"4300": "Warwickshire Fire & Rescue Service",
+				"4400": "West Midlands Fire Service",
+				"4500": "West Sussex Fire Brigade",
+				"4600": "West Yorkshire Fire Service",
+				"4700": "Wiltshire & Swindon Fire Authority"
+			},
+			"wales": {
+				"4800": "Mid & West Wales Fire Brigade",
+				"4900": "North Wales Fire Service",
+				"5000": "South Wales Fire Service"
+			},
+			"scotland": {
+				"5200": "Central Scotland Fire Brigade",
+				"5300": "Dumfries & Galloway Fire Brigade",
+				"5400": "Fife Fire & Rescue Service",
+				"5500": "Grampian Fire Brigade",
+				"5600": "Highland & Islands Fire Brigade",
+				"5700": "Lothian & Borders Fire Brigade",
+				"5800": "Strathclyde Fire Brigade",
+				"5900": "Tayside Fire Brigade"
+			},
+			"northern_ireland": {
+				"5100": "Northern Ireland Fire Brigade"
+			},
+			"islands": {
+				"6000": "Guernsey Fire Brigade",
+				"6100": "Isle of Man Fire & Rescue Service",
+				"6200": "States of Jersey Fire & Rescue Service"
+			}
+		},
+		"london_fire_brigade_stop_codes": {
+			"description": "London Fire Brigade incident closure codes",
+			"codes": {
+				"F": "Primary Fire",
+				"LC": "Late Call",
+				"SF": "Secondary Fire",
+				"CH": "Chimney Fire",
+				"AFA": "Automatic Fire Alarm",
+				"AC": "False alarm - Good intent",
+				"M": "False alarm - Malicious",
+				"FAT": "Flood call attended - Batch mobilised",
+				"SS": "Special Service",
+				"NA": "Not attended call",
+				"NCC": "Not attended - Call challenge",
+				"NMP": "Not attended - Call from mobile phone",
+				"NOP": "Operator created call",
+				"NPB": "Not attended - Call from public call box",
+				"MA": "Mutual assistance",
+				"FNA": "Not attended - Call to flooding",
+				"FCN": "Flood call - Attendance cancelled",
+				"DTF": "Details to follow",
+				"NAFA": "Not attended - Call to AFA",
+				"NSIL": "Not attended - Shut in lift call",
+				"NR": "National Resilience Incident",
+				"GT": "Use of Special Operations Room",
+				"FMP": "Forward Mobilising Procedure",
+				"SBY": "Standby",
+				"Duplicate": "Duplicate Call",
+				"Merge": "Merged Incident",
+				"SERD": "Safety Event",
+				"AFR": "Alleged Fire Risk",
+				"ES5": "Request From Police - Refer to ILO"
+			}
+		},
+		"fire_response_codes": {
+			"description": "Fire service operational response codes",
+			"priority_codes": {
+				"Code 1": "Non-emergency response - no lights or sirens required",
+				"Code 2": "Non-life-threatening emergency - immediate response without lights/sirens",
+				"Code 3": "Life-threatening emergency - lights and sirens required (hot response)",
+				"Code 4": "Situation under control - no further vehicles required"
+			},
+			"colour_codes": {
+				"Red, Red, Red": "Highest priority - urgent assistance required",
+				"White": "Very high priority - new incident report",
+				"Blue": "High priority - incident message",
+				"Green": "Medium priority - incident stop",
+				"Yellow": "Low priority - non-incident message"
+			},
+			"status_codes": {
+				"1": "Responding to incident or move-up",
+				"2": "Call off (sent by ComCen)",
+				"3": "On scene at incident or move-up station",
+				"4": "Available for response",
+				"5": "Returned to station",
+				"6": "Incident in Rural Fire District",
+				"7": "Unavailable for response (state reason)"
+			}
+		}
+	},
+	"coastguard_codes": {
+		"description": "HM Coastguard emergency response codes and procedures",
+		"vhf_channels": {
+			"Channel 16": "International distress and calling frequency",
+			"Channel 70": "Digital Selective Calling (DSC)",
+			"Channel 6": "Coast Guard operations",
+			"Channel 10": "Coast Guard operations",
+			"Channel 23": "Coast Guard operations",
+			"Channel 67": "Coast Guard operations",
+			"Channel 62": "Coast Guard operations",
+			"Channel 63": "Coast Guard operations",
+			"Channel 64": "Coast Guard operations"
+		},
+		"rescue_coordination_centres": {
+			"JRCC Fareham": "Joint Rescue Coordination Centre (National Maritime Operations Centre)",
+			"MRCC Aberdeen": "Maritime Rescue Coordination Centre Aberdeen",
+			"MRCC Belfast": "Maritime Rescue Coordination Centre Belfast (Bangor)",
+			"MRCC Dover": "Maritime Rescue Coordination Centre Dover",
+			"MRCC Falmouth": "Maritime Rescue Coordination Centre Falmouth",
+			"MRCC Holyhead": "Maritime Rescue Coordination Centre Holyhead",
+			"MRCC Humber": "Maritime Rescue Coordination Centre Humber (Bridlington)",
+			"MRCC Milford Haven": "Maritime Rescue Coordination Centre Milford Haven",
+			"MRCC Shetland": "Maritime Rescue Coordination Centre Shetland",
+			"MRCC Stornoway": "Maritime Rescue Coordination Centre Stornoway",
+			"MRSC London": "Maritime Rescue Sub-Centre London"
+		}
+	},
+	"general_emergency_codes": {
+		"public_warning_codes": {
+			"Inspector Sands": "Fire emergency (public venues, transport)",
+			"Inspector Gravel": "Bomb alert (London Underground)",
+			"Time Check": "Bomb threat announcement",
+			"Doctor Brown / Mr Brown": "Threat of violence",
+			"Oscar, Oscar, Oscar": "Man overboard (maritime)",
+			"Bravo, Bravo, Bravo": "Security alert - suspect identification"
+		},
+		"national_emergency_numbers": {
+			"999": "Primary UK emergency number (Police, Fire, Ambulance, Coastguard)",
+			"112": "European emergency number (same services as 999)",
+			"101": "Police non-emergency number",
+			"111": "NHS non-emergency medical advice",
+			"105": "Power cut reporting",
+			"0800 111 999": "Gas emergency",
+			"0345 988 1188": "Floodline",
+			"116 123": "Samaritans (24/7 emotional support)",
+			"0800 1111": "Childline (under 19s support)",
+			"0800 789 321": "Anti-terrorist hotline",
+			"0800 555 111": "Crimestoppers (anonymous crime reporting)",
+			"0300 123 2040": "Action Fraud"
+		}
+	}
+}

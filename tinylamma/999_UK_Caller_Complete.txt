@@ -1,0 +1,36 @@
+OPERATOR: 999, what's your emergency?
+CALLER:I think there may be an explosion here!
+
+OPERATOR: Explosions can cause serious injuries. Are you sure that was the reason why they were calling out loudly?
+
+CALLER: Yes, we heard some screaming coming from inside one of our buildings. We need help now!
+
+OPERATOR: Okay, where exactly did you hear them come from?
+
+CALLER: The building next door to us...
+OPERATOR: And how many people do you believe might be injured as a result of the blast?
+
+CALLER:We don't know yet because I just got into my office. But we've been told by several employees who work near me that they saw smoke pouring out of their offices. They also said that everyone ran outside when they started hearing gunshots.
+
+OPERATOR:Gunshot sounds? That doesn't sound
+like something normal would make. Can you tell me more about what happened before all those shots rang out?
+
+CALLER:No, I didn't see anything else besides the shooting. It seems like someone set off a bomb somewhere nearby.
+
+OPERATOR:And then what happened afterward? Did anyone get hurt during that time period?
+
+CALLER:Yes, I am trying to find out right now. There must be hundreds of people around here
+who could potentially be affected.
+
+OPERATOR:Can you please give me any information about the type of weapon used? Was it a handgun or a rifle?
+
+CALLER:It wasn't clear enough to say whether it was a handgun or a rifle. All I knew was that it was shot very close together.
+
+OPERATOR:Was anybody able to identify which department had called you first?
+CALLER:The police arrived within seconds.
+
+OPERATOR:Thank you so much for letting us know everything that has occurred. Is there another person who needs assistance immediately?
+
+CALLER:There isn't anymore than .
+
+OPERATOR:Okay, thank you again for helping us. Please stay calm while waiting for backup. If you require medical attention, dial 999. Thank you both.
