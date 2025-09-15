@@ -1,0 +1,34 @@
+OPERATOR: 9-1-1, what's your emergency?
+CALLER: I need an ambulance at Hornet Drive.
+OPERATOR: Okay, listen to me. Is this a house or an apartment?
+CALLER: It's a house.
+OPERATOR: Okay, what's going on?
+CALLER: A guy stopped me. He keeps cutting out.
+OPERATOR: You still not breathing, right. Where are you now?
+CALLER: At the phone.
+OPERATOR: Where are your parents?
+CALLER: At the pond.
+OPERATOR: At the pond?
+CALLER: Yes.
+OPERATOR: Did someone beat up your nephew and steal something?
+CALLER: Yeah, they're coming back.
+OPERATOR: They stole what?
+CALLER: They stole his stuff and now they're coming back.
+OPERATOR: Okay. Who are they?
+CALLER: I don't know. I just know.
+OPERATOR: Okay. Who is that?
+CALLER: Randy Warren.
+OPERATOR: Okay.
+CALLER: Are you going on, you going on, you gonna in, right now?
+CALLER: They're coming back.
+CALLER: They're not going to me.
+OPERATOR: I understand. What is the address?
+CALLER: I live on Sheridan, 10th and Sheridan. There's an officer here, 10th and Sheridan.
+OPERATOR: Was it on the east or west side of Sheridan? That's the street? That's the street when you're passing where you're at?
+CALLER: I was driving by the exit 44.
+OPERATOR: Was it on the east or west side of Sheridan? That's the border between Denver and Lakewood.
+CALLER: I was going northbound on Sheridan, so it must be Denver.
+OPERATOR: Okay, we need you to be in Denver so we can send an officer out. Can you come back into Denver?
+CALLER: Yeah, I can come back.
+OPERATOR: Are you going to start coming back right now?
+CALLER: Yeah, I'm coming back right now. Can
