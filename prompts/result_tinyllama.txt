@@ -1,0 +1,26 @@
+============================================================
+ENHANCED 999 TRANSCRIPT VALIDATION RESULTS
+============================================================
+File: tinylamma_generated_999_call.txt
+Overall Score: 66/100
+Total Lines: 21
+Emergency Keywords Matched: 6
+Role Check: FAIL
+No Stage Directions: PASS
+Emergency Focus: PASS
+Proper Ending: PASS
+Call Structure: PASS
+
+Scientific Metrics:
+TTR (Lexical Diversity): 0.894 (Good if >0.45)
+Avg Line Length (Words): 14.9 (Good if 5-20)
+Keyword Density: 0.054 (Good if >0.07)
+Coherence Overlap (Bigram): 0.005 (Good if >0.25)
+Urgency Score: 0.013 (Good if >0.03)
+Lexical Entropy: 7.578 (Good if >4.0 for realism)
+
+Issues Found:
+- Line 10: 'like something normal would make. Can you tell me more about what happened before all those shots rang out?' (invalid format)
+- Line 14: 'who could potentially be affected.' (invalid format)
+============================================================
+VALIDATION: PARTIAL PASS (Usable, but improve structure/realism)

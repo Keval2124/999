@@ -1,0 +1,28 @@
+============================================================
+ENHANCED 999 TRANSCRIPT VALIDATION RESULTS
+============================================================
+File: nanogpt_generated_999_call.txt
+Overall Score: 51/100
+Total Lines: 34
+Emergency Keywords Matched: 5
+Role Check: PASS
+No Stage Directions: PASS
+Emergency Focus: PASS
+Proper Ending: FAIL
+Call Structure: FAIL
+
+Scientific Metrics:
+TTR (Lexical Diversity): 0.446 (Good if >0.45)
+Avg Line Length (Words): 7.1 (Good if 5-20)
+Keyword Density: 0.073 (Good if >0.07)
+Coherence Overlap (Bigram): 0.033 (Good if >0.25)
+Urgency Score: 0.018 (Good if >0.03)
+Lexical Entropy: 6.235 (Good if >4.0 for realism)
+
+Issues Found:
+- Last line 'CALLER: Yeah, I'm coming back right now. Can' is not an OPERATOR/DISPATCHER line.
+- Missing proper operator greeting.
+- Roles do not alternate properly.
+- Improper call closing.
+============================================================
+VALIDATION: FAILED (Major issues; refine model/prompts)

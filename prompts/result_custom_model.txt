@@ -1,0 +1,26 @@
+============================================================
+ENHANCED 999 TRANSCRIPT VALIDATION RESULTS
+============================================================
+File: custom_model_generated_999_call.txt
+Overall Score: 51/100
+Total Lines: 12
+Emergency Keywords Matched: 5
+Role Check: PASS
+No Stage Directions: PASS
+Emergency Focus: PASS
+Proper Ending: FAIL
+Call Structure: FAIL
+
+Scientific Metrics:
+TTR (Lexical Diversity): 0.622 (Good if >0.45)
+Avg Line Length (Words): 2.9 (Good if 5-20)
+Keyword Density: 0.213 (Good if >0.07)
+Coherence Overlap (Bigram): 0.000 (Good if >0.25)
+Urgency Score: 0.000 (Good if >0.03)
+Lexical Entropy: 4.435 (Good if >4.0 for realism)
+
+Issues Found:
+- Last line 'caller: thank you.' is not an OPERATOR/DISPATCHER line.
+- Improper call closing.
+============================================================
+VALIDATION: FAILED (Major issues; refine model/prompts)
