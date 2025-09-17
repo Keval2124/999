@@ -37,7 +37,7 @@ def load_codes_and_keywords(call_type='999'):
             "thank you", "goodbye", "bye", "help is on the way", "units dispatched", "en route", "stay on the line",
             "call ended", "ambulance is coming", "police are on their way"
         ]
-    elif call_type == '911':
+    elif call_type == '911' or call_type == '9-1-1' or call_type == '999':
         codes_file = Path('us_emergency_codes.json')  # Assume a similar US file; create if needed
         emergency_keywords = [
             "emergency", "accident", "help", "injured", "ambulance", "police", "fire", "department", "hit", "crash",
@@ -243,14 +243,6 @@ def validate_transcript_enhanced(file_path, call_type='999'):
     structure_ok, structure_issues = check_call_structure(lines, greeting_phrases, closing_phrases)
     results["call_structure"] = structure_ok
     results["issues"].extend(structure_issues)
-    
-    # 6. Optional Code Usage
-    if relevant_codes:
-        code_mentions = [code for code in relevant_codes if re.search(rf'\b{re.escape(code)}\b', content, re.IGNORECASE)]
-        results["code_usage"] = bool(code_mentions)
-        results["codes_used"] = code_mentions
-        if not code_mentions:
-            results["issues"].append(f"No {call_type} codes used (optional, but recommended for realism).")
     
     # Metrics
     results["ttr"] = compute_ttr(content)

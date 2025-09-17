@@ -10,6 +10,7 @@ No Stage Directions: PASS
 Emergency Focus: PASS
 Proper Ending: FAIL
 Call Structure: FAIL
+Code Usage (Optional): NOT USED
 
 Scientific Metrics:
 TTR (Lexical Diversity): 0.446 (Good if >0.45)
@@ -24,5 +25,6 @@ Issues Found:
 - Missing proper operator greeting.
 - Roles do not alternate properly.
 - Improper call closing.
+- No 999 codes used (optional, but recommended for realism).
 ============================================================
 VALIDATION: FAILED (Major issues; refine model/prompts)

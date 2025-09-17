@@ -10,6 +10,7 @@ No Stage Directions: PASS
 Emergency Focus: PASS
 Proper Ending: PASS
 Call Structure: PASS
+Code Usage (Optional): NOT USED
 
 Scientific Metrics:
 TTR (Lexical Diversity): 0.894 (Good if >0.45)
@@ -22,5 +23,6 @@ Lexical Entropy: 7.578 (Good if >4.0 for realism)
 Issues Found:
 - Line 10: 'like something normal would make. Can you tell me more about what happened before all those shots rang out?' (invalid format)
 - Line 14: 'who could potentially be affected.' (invalid format)
+- No 999 codes used (optional, but recommended for realism).
 ============================================================
 VALIDATION: PARTIAL PASS (Usable, but improve structure/realism)

@@ -10,6 +10,7 @@ No Stage Directions: PASS
 Emergency Focus: PASS
 Proper Ending: FAIL
 Call Structure: FAIL
+Code Usage (Optional): NOT USED
 
 Scientific Metrics:
 TTR (Lexical Diversity): 0.622 (Good if >0.45)
@@ -22,5 +23,6 @@ Lexical Entropy: 4.435 (Good if >4.0 for realism)
 Issues Found:
 - Last line 'caller: thank you.' is not an OPERATOR/DISPATCHER line.
 - Improper call closing.
+- No 999 codes used (optional, but recommended for realism).
 ============================================================
 VALIDATION: FAILED (Major issues; refine model/prompts)
